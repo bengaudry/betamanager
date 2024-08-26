@@ -1,5 +1,5 @@
 "use client";
-import { PageWrapper } from "@/components/Page";
+import { PageWrapper } from "@/components/PageWrapper";
 import { useParams } from "next/navigation";
 
 export default function DashboardPage() {

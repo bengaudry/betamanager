@@ -1,7 +1,7 @@
 "use client";
 import { CopyBtn } from "@/components/CopyBtn";
 import { CTA } from "@/components/CTA";
-import { PageWrapper } from "@/components/Page";
+import { PageWrapper } from "@/components/PageWrapper";
 import { useState } from "react";
 
 type Tester = {
@@ -197,8 +197,8 @@ export default function TestersPage() {
         </div>
         <div className="w-full pb-8">
           {testers && getSortedTesters().length > 0 ? (
-            getSortedTesters().map((tester) => (
-              <TesterDetails tester={tester} onDeleteUser={handleDeleteUser} />
+            getSortedTesters().map((tester, idx) => (
+              <TesterDetails key={idx} tester={tester} onDeleteUser={handleDeleteUser} />
             ))
           ) : (
             <p className="text-center text-neutral-400 mt-4">

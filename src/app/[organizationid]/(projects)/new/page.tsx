@@ -1,4 +1,4 @@
-import { PageWrapper } from "@/components/Page";
+import { PageWrapper } from "@/components/PageWrapper";
 
 export default function NewProjectPage () {
     const FORBIDDEN_PROJECTS_NAMES = [

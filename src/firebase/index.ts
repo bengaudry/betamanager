@@ -1,5 +1,5 @@
-import { getApps, initializeApp } from "firebase/app";
-import { browserSessionPersistence, GithubAuthProvider, initializeAuth, type Auth } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { browserPopupRedirectResolver, browserSessionPersistence, getAuth, initializeAuth, type Auth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 export const FIREBASE_CONFIG = {
@@ -13,22 +13,17 @@ export const FIREBASE_CONFIG = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-export function getFirebaseApp() {
-  const apps = getApps();
-  return initializeApp(FIREBASE_CONFIG);
-}
+const APP = initializeApp(FIREBASE_CONFIG)
 
-console.log("app id", process.env.APP_ID)
+export const getFirebaseApp = () => APP;
 
 // AUTH
-const AUTH = initializeAuth(getFirebaseApp(), {
+const auth = typeof window !== "undefined" ? initializeAuth(APP, {
   persistence: browserSessionPersistence,
-  popupRedirectResolver: undefined
-});
-export const getFirebaseAuth = (): Auth => AUTH;
+  popupRedirectResolver: browserPopupRedirectResolver,
+}) : getAuth(APP);
 
-const GITHUB_PROVIDER = new GithubAuthProvider();
-GITHUB_PROVIDER.addScope("repo");
-export const getGithubProvider = () => GITHUB_PROVIDER;
+export const getFirebaseAuth = (): Auth => auth;
 
-export const getFirebaseDb = () => getFirestore(getFirebaseApp());
+const DB = getFirestore(getFirebaseApp())
+export const getFirebaseDb = () => DB;

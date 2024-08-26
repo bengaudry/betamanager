@@ -1,6 +1,8 @@
 "use client";
-import { PageWrapper } from "@/components/Page";
+import { PageWrapper } from "@/components/PageWrapper";
+import { getFirebaseAuth } from "@/firebase";
 import { useAuth } from "@/hooks/useAuth";
+import { signOut } from "firebase/auth";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -30,14 +32,34 @@ export default function ProjectsPage() {
         console.error(err);
         setProjects(null);
       });
-  }, [organizationid]);
+  }, []);
 
   return (
     <div className="max-w-screen-xl mx-auto">
-      <PageWrapper title="Projects" subtitle={`@${organizationid}`}>
+      <PageWrapper>
+        <header className="flex items-center justify-between">
+          <div className="flex items-center gap-4 mb-4">
+            <img
+              src={user?.photoURL ?? ""}
+              className="w-12 h-12 rounded-full"
+            />
+            <div>
+              <h1 className="font-bold text-3xl leading-7">Projects</h1>
+              <h2 className="text-neutral-500 text-lg">@{organizationid}</h2>
+            </div>
+          </div>
+
+          <button
+            onClick={() => signOut(getFirebaseAuth()).then(() => push("/"))}
+          >
+            Sign out
+          </button>
+        </header>
+
         <div className="grid grid-cols-4 mx-auto gap-8">
-          {projects?.map((project) => (
+          {projects?.map((project, idx) => (
             <Link
+              key={idx}
               href={`/${organizationid}/${project.id}/manage`}
               className="w-full h-36 py-3 px-6 flex flex-col justify-end rounded-lg border border-neutral-800 hover:bg-neutral-900/40 transition-colors"
             >

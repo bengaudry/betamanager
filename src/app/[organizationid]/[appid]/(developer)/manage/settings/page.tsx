@@ -1,4 +1,4 @@
-import { PageWrapper } from "@/components/Page";
+import { PageWrapper } from "@/components/PageWrapper";
 
 export default function AppSettingsPage () {
     return <PageWrapper title="Settings">

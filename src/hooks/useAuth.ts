@@ -5,12 +5,15 @@ import {
   type User as FirebaseUser,
 } from "firebase/auth";
 
-import { getFirebaseAuth } from "@/firebase";
+import { getFirebaseAuth, getFirebaseDb } from "@/firebase";
+import { doc, getDoc } from "firebase/firestore/lite";
 
 type User = FirebaseUser & { isPremium?: boolean };
 
 async function isUserPremium(uid: string) {
-  return true;
+  const user = await getDoc(doc(getFirebaseDb(), "users", uid));
+  if (!user.exists()) return false;
+  return user.data().isPremium ?? false;
 }
 
 export const useAuth = (): [User | null, boolean] => {

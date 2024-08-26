@@ -1,6 +1,6 @@
 "use client";
 import { PremiumGuarded } from "@/components/Barriers";
-import { PageWrapper } from "@/components/Page";
+import { PageWrapper } from "@/components/PageWrapper";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { PropsWithChildren } from "react";

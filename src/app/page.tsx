@@ -1,5 +1,5 @@
 "use client";
-import { PageWrapper } from "@/components/Page";
+import { PageWrapper } from "@/components/PageWrapper";
 import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
 
