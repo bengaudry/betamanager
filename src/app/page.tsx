@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <PageWrapper title="Landing page in construction">
       {JSON.stringify(user)}
-      <Link href="/trips/manage">Test</Link>
+      <Link href="/bengaudry/trips/manage">Test</Link>
     </PageWrapper>
   );
 }

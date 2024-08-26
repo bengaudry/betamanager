@@ -6,10 +6,10 @@ import { useParams, usePathname } from "next/navigation";
 import { PropsWithChildren } from "react";
 
 const NavLink = ({ href, title }: { href: string; title: string }) => {
-  const { appid } = useParams();
+  const { appid, organizationid } = useParams();
 
   const p = usePathname();
-  const url = `/${appid}/manage/customize/${href}`;
+  const url = `/${organizationid}/${appid}/manage/customize/${href}`;
   const active = href === "" ? `${p}/` === url : p.includes(url);
 
   return (

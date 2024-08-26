@@ -1,6 +1,8 @@
 "use client";
+import { CopyBtn } from "@/components/CopyBtn";
+import { CTA } from "@/components/CTA";
 import { PageWrapper } from "@/components/Page";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 
 type Tester = {
   id: string;
@@ -12,26 +14,65 @@ type Tester = {
   phoneNumber?: string;
 };
 
-function TesterDetails({ tester }: { tester: Tester }) {
+function TesterDetails({
+  tester,
+  onDeleteUser,
+}: {
+  tester: Tester;
+  onDeleteUser: (uid: string) => void;
+}) {
+  const ActionButton = ({
+    icon,
+    ...props
+  }: {
+    icon: string;
+    title: string;
+    onClick: () => void;
+  }) => (
+    <button {...props}>
+      <i className={`fi fi-rr-${icon} text-neutral-400 hover:text-white`} />
+    </button>
+  );
+
   return (
-    <div className="border-b border-neutral-700">
-      <div className="grid grid-cols-5 items-center justify-center px-4 py-2 w-full ">
-        <h2 className="font-medium text-neutral-100 overflow-x-scroll">
+    <div className="border-b border-neutral-800">
+      <div className="grid grid-cols-12 items-center justify-center px-4 py-2 w-full">
+        <h2 className="font-medium text-neutral-100 col-span-3 overflow-clip">
           {tester.firstName} {tester.lastName}
         </h2>
-        <p className="text-sm text-neutral-400 overflow-x-scroll">
-          {tester.email} <br />
-          {tester.phoneNumber}
+        <p className="text-sm text-neutral-400 overflow-clip  col-span-4">
+          <span>
+            {tester.email}
+            <CopyBtn text={tester.email} />
+          </span>
+          <br />
+          {tester.phoneNumber && (
+            <span>
+              {tester.phoneNumber}
+              <CopyBtn text={tester.phoneNumber} />
+            </span>
+          )}
         </p>
-        <p className="text-sm text-neutral-400 overflow-x-scroll">
+        <p className="text-sm text-neutral-400 overflow-clip  col-span-2">
           {tester.creationDate.toLocaleDateString()}
         </p>
-        <p className="text-sm text-neutral-400 overflow-x-scroll">
+        <p className="text-sm text-neutral-400 overflow-clip  col-span-2">
           {tester.lastSignIn.toLocaleDateString()}
         </p>
-        <p className="text-sm text-neutral-400 overflow-x-scroll">
-          {tester.id}
-        </p>
+        <div className="flex flex-row items-center gap-2  col-span-1">
+          <ActionButton
+            icon="copy"
+            title="Copy tester id"
+            onClick={() => {
+              navigator.clipboard.writeText(tester.id);
+            }}
+          />
+          <ActionButton
+            icon="trash"
+            title="Remove this tester"
+            onClick={() => onDeleteUser(tester.id)}
+          />
+        </div>
       </div>
     </div>
   );
@@ -61,7 +102,6 @@ export default function TestersPage() {
       email: "jane.doe@example.com",
       creationDate: new Date("01-02-2022"),
       lastSignIn: new Date("04-06-2024"),
-      phoneNumber: "+33 6 78 89 54 65",
     },
     {
       id: "dqlhusqufcopopqzdqsdq5d4q",
@@ -101,13 +141,15 @@ export default function TestersPage() {
   function SortByButton({
     category,
     label,
+    span,
   }: {
     category?: SortCategory;
     label: string;
+    span: number;
   }) {
     return (
       <button
-        className="text-left"
+        className={`text-left col-span-${span}`}
         onClick={() => {
           if (!category) return;
           if (sortBy === category) return setSortAsc((a) => !a);
@@ -119,35 +161,59 @@ export default function TestersPage() {
     );
   }
 
+  const handleDeleteUser = (uid: string) => {
+    return;
+  };
+
   return (
     <PageWrapper title="Testers">
       <div className="rounded-md overflow-hidden bg-neutral-900">
-        <div className="px-4 pt-4 pb-1 bg-neutral-800">
-          <input
-            type="text"
-            placeholder="Filter by email, name, phone number"
-            className="bg-black mb-4 px-4 py-2 rounded-md w-full"
-            value={filterQuery}
-            onChange={({ target }) => setFilterQuery(target.value)}
-          />
-          <div className="grid grid-cols-5 ">
-            <SortByButton category="name" label="Name" />
-            <SortByButton category="email" label="Informations" />
-            <SortByButton category="last-sign-in" label="Last sign in" />
-            <SortByButton category="creation-date" label="Creation date" />
-            <SortByButton label="UID" />
+        <div className="px-4 pt-4 pb-1 bg-neutral-800 border-b border-neutral-700">
+          <div className="mb-4 flex items-center gap-3">
+            <input
+              type="text"
+              placeholder="Filter by email, name, phone number"
+              className="bg-black px-4 py-2 rounded-md w-full"
+              value={filterQuery}
+              onChange={({ target }) => setFilterQuery(target.value)}
+            />
+            <CTA label="Add tester" icon="user-add" />
+          </div>
+          <div className="grid grid-cols-12 ">
+            <SortByButton span={3} category="name" label="Name" />
+            <SortByButton span={4} category="email" label="Informations" />
+            <SortByButton
+              span={2}
+              category="last-sign-in"
+              label="Last sign in"
+            />
+            <SortByButton
+              span={2}
+              category="creation-date"
+              label="Creation date"
+            />
+            <SortByButton span={1} label="Actions" />
           </div>
         </div>
         <div className="w-full pb-8">
           {testers && getSortedTesters().length > 0 ? (
             getSortedTesters().map((tester) => (
-              <TesterDetails tester={tester} />
+              <TesterDetails tester={tester} onDeleteUser={handleDeleteUser} />
             ))
           ) : (
             <p className="text-center text-neutral-400 mt-4">
               No testers found. Try modifying filters
             </p>
           )}
+        </div>
+
+        <div className="flex items-center float-right">
+          <button>
+            <i className="fi fi-rr-angle-left" />
+          </button>
+          <button>
+            <i className="fi fi-rr-angle-right" />
+          </button>
         </div>
       </div>
     </PageWrapper>

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import "@flaticon/flaticon-uicons/css/regular/rounded.css"
+import "@flaticon/flaticon-uicons/css/solid/rounded.css"
 
 const font = Poppins({ weight: "400", subsets: ["latin"] });
 
