@@ -1,3 +1,5 @@
+type User = DefaultUser & { id: string; subscription: SubscriptionPlan };
+
 type Organization = {
   id: string;
   name: string;
@@ -9,6 +11,8 @@ type Project = {
   name: string;
   description: string;
   nbTesters: number;
-  visibility: "public" | "private"
+  visibility: "public" | "private";
   version?: string;
 };
+
+type SubscriptionPlan = "free" | "premium";

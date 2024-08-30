@@ -1,24 +1,24 @@
 "use client";
 import { PageWrapper } from "@/components/PageWrapper";
 import { getFirebaseAuth } from "@/firebase";
-import { useAuth } from "@/hooks/useAuth";
 import {
   GithubAuthProvider,
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
+import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function LinkGithubPage() {
   const { push } = useRouter();
-  const [user] = useAuth();
+  const { data: session } = useSession();
   const searchParams = useSearchParams();
 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (user !== null) push(`/${user.displayName?.toLowerCase()}`);
+    if (session?.user) push(`/${session.user.name}`);
   }, []);
 
   const handleLink = async () => {

@@ -1,38 +1,15 @@
 "use client";
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+
 import { LoadingIndicator } from "@/components/LoadingIndicator";
-import { getFirebaseAuth } from "@/firebase";
-import { useAuth } from "@/hooks/useAuth";
-import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 export default function SignInPage() {
   const [loading, setLoading] = useState(false);
-  const { push } = useRouter();
-  const [user] = useAuth();
-
-  useEffect(() => {
-    if (user !== null) push(`/${user.displayName?.toLowerCase()}`);
-  }, []);
 
   const handleSignIn = async () => {
-    const provider = new GithubAuthProvider();
-    provider.addScope("repo");
-    provider.addScope("read:user");
-    provider.setCustomParameters({ allow_signup: "false" });
-
-    try {
-      setLoading(true);
-      const userCredential = await signInWithPopup(getFirebaseAuth(), provider);
-      console.info(userCredential.user.uid);
-      if (!userCredential.user.displayName) return;
-
-      push(`/${userCredential.user.displayName.toLowerCase()}`);
-    } catch (err) {
-      console.error("Unable to sign in with GitHub provider.", err);
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true);
+    signIn("github").catch(() => setLoading(false));
   };
 
   return (
@@ -44,8 +21,10 @@ export default function SignInPage() {
       <div className="w-screen h-screen inset-0 bg-white/70 backdrop-blur-[100px] z-10 absolute"></div>
       <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-40">
         <div className="flex flex-col justify-center max-w-80 mb-12">
-          <h1 className="text-3xl font-bold mb-2 text-center text-black">Sign in</h1>
-          
+          <h1 className="text-3xl font-bold mb-2 text-center text-black">
+            Sign in
+          </h1>
+
           <button
             onClick={handleSignIn}
             className="bg-gradient-to-b from-neutral-800 to-neutral-900 text-white px-8 rounded-md py-1 w-full shadow-lg shadow-black/30"

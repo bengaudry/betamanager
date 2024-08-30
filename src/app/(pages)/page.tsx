@@ -3,10 +3,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { CTA } from "@/components/CTA";
-import { useAuth } from "@/hooks/useAuth";
+import { useSession } from "next-auth/react";
 
-export default function Home() {
-  const [user] = useAuth();
+export default function LandingPage() {
+  const { data } = useSession();
   const { push } = useRouter();
 
   return (
@@ -22,11 +22,11 @@ export default function Home() {
           </div>
 
           <div>
-            {user ? (
+            {data?.user ? (
               <CTA
                 small
                 label="My projects"
-                onClick={() => push(`/${user.displayName?.toLowerCase()}`)}
+                onClick={() => push(`/${data.user?.name?.toLowerCase()}`)}
               />
             ) : (
               <div className="flex items-center justify-end gap-1">
@@ -34,7 +34,9 @@ export default function Home() {
                   small
                   secondary
                   label="Sign in"
-                  onClick={() => push("/signin")}
+                  onClick={() =>
+                    push("/signin")
+                  }
                 />
                 <CTA
                   small

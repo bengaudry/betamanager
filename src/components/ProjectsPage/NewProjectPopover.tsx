@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { Popover } from "../Popover";
 import { TextInput } from "../TextInput";
@@ -9,6 +10,47 @@ import {
   SelectValue,
   SelectTrigger,
 } from "../ui/select";
+import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
+
+export const NewProjectButton = ({
+  projects,
+  onOpen,
+}: {
+  projects: Project[];
+  onOpen: () => void;
+}) => {
+  const [user] = useAuth();
+  const { organizationname } = useParams();
+  const { data } = useSession();
+
+  const canCreateNewProject =
+    (user && user.isPremium) || (projects && projects.length <= 2) || !projects;
+
+  /* Show an add button if the visitor of the page is the organization shown */
+  if (!data?.user?.name || !organizationname) return null;
+  return (
+    <button
+      onClick={() => {
+        if (!canCreateNewProject)
+          return alert(
+            "You reached the limit of projects for a free account. Please upgrade your plan or remove another project."
+          );
+        onOpen();
+      }}
+      className="group relative h-fit w-full xs:h-36 py-2 grid place-content-center justify-items-center rounded-lg border border-neutral-300 hover:bg-neutral-100 transition-colors"
+    >
+      <p className="text-neutral-500 flex items-center gap-2">
+        <span className="xs:hidden">New project</span>
+        <i className="inline-block fi fi-rr-plus xs:text-5xl xs:group-hover:scale-125 transition-transform origin-center translate-y-0.5" />
+      </p>
+      {!canCreateNewProject && (
+        <i className="fi fi-rr-rectangle-pro absolute right-2 top-2 block xs:text-xl translate-y-0.5 text-indigo-300" />
+      )}
+    </button>
+  );
+};
 
 export function NewProjectPopover({
   opened,
@@ -29,6 +71,8 @@ export function NewProjectPopover({
 
   return (
     <Popover
+      title="Create new project"
+      submitLabel="Create project"
       opened={opened}
       onClose={onClose}
       onAsyncSubmit={() => onSubmit(name, description, visibility)}
@@ -65,5 +109,44 @@ export function NewProjectPopover({
         </Select>
       </div>
     </Popover>
+  );
+}
+
+export function NewProjectClient({ projects }: { projects: Project[] }) {
+  const [opened, setOpened] = useState(false);
+  const [user] = useAuth();
+  const { organizationname } = useParams();
+
+  const handleCreateNewProject = async (
+    name: string,
+    description: string,
+    visibility: "public" | "private"
+  ) => {
+    if (!user) return;
+    try {
+      fetch("/api/organization-projects", {
+        method: "POST",
+        body: JSON.stringify({
+          organizationId: user.uid,
+          organizationName: organizationname,
+          name,
+          description,
+          visibility,
+        }),
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return (
+    <>
+      <NewProjectButton projects={projects} onOpen={() => setOpened(true)} />
+      <NewProjectPopover
+        opened={opened}
+        onClose={() => setOpened(false)}
+        onSubmit={handleCreateNewProject}
+      />
+    </>
   );
 }

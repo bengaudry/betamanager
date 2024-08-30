@@ -1,28 +1,28 @@
 "use client";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useState } from "react";
-import { signOut } from "firebase/auth";
 
-import { getFirebaseAuth } from "@/firebase";
-import { useAuth } from "@/hooks/useAuth";
 import { useFetch } from "@/hooks/useFetch";
 import { PageWrapper } from "@/components/PageWrapper";
 import { NewProjectPopover } from "@/components/ProjectsPage";
+import { signOut, useSession } from "next-auth/react";
 
 export default function ProjectPage() {
   const { organizationname } = useParams();
-  const [user] = useAuth();
-  const { push } = useRouter();
+  const { data: session } = useSession();
+  const user = session?.user ?? null;
 
   const [projects, error, loading] = useFetch<Project[]>(
-    `/api/organization-projects?organization-name=${organizationname}&curr-uid=${user?.uid}`
+    `/api/organization-projects?organization-name=${organizationname}&curr-uid=${session?.user?.id}`
   );
 
   const [newProjectPopoverOpened, setNewProjectPopoverOpened] = useState(false);
 
   const canCreateNewProject =
-    (user && user.isPremium) || (projects && projects.length <= 2) || !projects;
+    (user && user.subscription === "premium") ||
+    (projects && projects.length <= 2) ||
+    !projects;
 
   const handleCreateNewProject = async (
     name: string,
@@ -34,7 +34,7 @@ export default function ProjectPage() {
       fetch("/api/organization-projects", {
         method: "POST",
         body: JSON.stringify({
-          organizationId: user.uid,
+          organizationId: user.id,
           organizationName: organizationname,
           name,
           description,
@@ -48,7 +48,7 @@ export default function ProjectPage() {
 
   const NewProjectButton = () => {
     /* Show an add button if the visitor of the page is the organization shown */
-    if (!user?.displayName || !organizationname) return null;
+    if (!user?.name || !organizationname) return null;
     return (
       <button
         onClick={() => {
@@ -82,7 +82,7 @@ export default function ProjectPage() {
         <header className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">
             <img
-              src={user?.photoURL ?? "/no-profile-pic.png"}
+              src={user?.image ?? "/no-profile-pic.png"}
               className="w-12 h-12 rounded-full"
               width={48}
               height={48}
@@ -91,7 +91,7 @@ export default function ProjectPage() {
               <h1 className="font-bold text-3xl leading-7">Projects</h1>
               <p className="text-neutral-500 text-lg">
                 @{organizationname}{" "}
-                {user && user.isPremium && (
+                {user && user.subscription === "premium" && (
                   <i className="fi fi-rr-rectangle-pro text-indigo-300 inline-block translate-y-0.5" />
                 )}
               </p>
@@ -100,7 +100,7 @@ export default function ProjectPage() {
 
           <button
             onClick={() => {
-              signOut(getFirebaseAuth()).then(() => push("/"));
+              signOut({ callbackUrl: "/" });
             }}
             className="px-4 py-2 rounded-md text-white font-medium bg-red-500 hover:bg-red-500/40 transition-colors"
           >

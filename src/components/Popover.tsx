@@ -3,6 +3,8 @@ import { CTA } from "./CTA";
 
 type PopoverProps = {
   opened: boolean;
+  submitLabel?: string;
+  title?: string;
   disableClose?: boolean;
   disableSubmit?: boolean;
   onSubmit?: () => void;
@@ -15,6 +17,8 @@ export function Popover({
   onSubmit,
   onAsyncSubmit,
   opened,
+  title,
+  submitLabel,
   children,
 }: PopoverProps) {
   const [popoverOpened, setPopoverOpened] = useState(opened);
@@ -53,14 +57,14 @@ export function Popover({
           popoverOpened ? "scale-100 opacity-100" : "scale-90 opacity-0"
         } transition-all`}
       >
-        <h3 className="font-semibold text-2xl mb-4">Create new project</h3>
+        <h3 className="font-semibold text-2xl mb-4">{title}</h3>
 
         <div>{children}</div>
 
         <div className="flex gap-2 justify-end mt-4">
           <CTA label="Cancel" secondary onClick={handleClosePopover} />
           <CTA
-            label={loading ? "..." : "Create new project"}
+            label={loading ? "..." : submitLabel ?? "Continue"}
             onClick={async () => {
               if (onAsyncSubmit) {
                 setLoading(true);

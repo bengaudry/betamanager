@@ -1,5 +1,6 @@
 "use client";
 import { useAuth } from "@/hooks/useAuth";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { PropsWithChildren, useEffect } from "react";
 
@@ -18,11 +19,11 @@ export function AuthGuarded({
   children,
   href,
 }: PropsWithChildren & { href?: string }) {
-  const [user, loading] = useAuth();
+  const { data: session } = useSession();
 
-  useGuard(href ?? "/signin", !loading && user === null);
+  useGuard(href ?? "/signin", session === null);
 
-  return loading ? null : children;
+  return children;
 }
 
 export function PremiumGuarded({
