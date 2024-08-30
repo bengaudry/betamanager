@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Raleway, Racing_Sans_One } from "next/font/google";
 import "./globals.css";
-import "@flaticon/flaticon-uicons/css/regular/rounded.css"
-import "@flaticon/flaticon-uicons/css/solid/rounded.css"
+import "@flaticon/flaticon-uicons/css/regular/rounded.css";
+import "@flaticon/flaticon-uicons/css/brands/all.css";
 
-const font = Poppins({ weight: "400", subsets: ["latin"] });
+const font = Raleway({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Betamanager",

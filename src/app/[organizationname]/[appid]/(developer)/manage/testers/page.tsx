@@ -30,17 +30,17 @@ function TesterDetails({
     onClick: () => void;
   }) => (
     <button {...props}>
-      <i className={`fi fi-rr-${icon} text-neutral-400 hover:text-white`} />
+      <i className={`fi fi-rr-${icon} hover:text-white`} />
     </button>
   );
 
   return (
-    <div className="border-b border-neutral-800">
+    <div className="border-b border-neutral-300 text-neutral-500">
       <div className="grid grid-cols-12 items-center justify-center px-4 py-2 w-full">
-        <h2 className="font-medium text-neutral-100 col-span-3 overflow-clip">
+        <h2 className="font-medium col-span-3 overflow-clip">
           {tester.firstName} {tester.lastName}
         </h2>
-        <p className="text-sm text-neutral-400 overflow-clip  col-span-4">
+        <p className="text-sm overflow-clip  col-span-4">
           <span>
             {tester.email}
             <CopyBtn text={tester.email} />
@@ -53,10 +53,10 @@ function TesterDetails({
             </span>
           )}
         </p>
-        <p className="text-sm text-neutral-400 overflow-clip  col-span-2">
+        <p className="text-sm overflow-clip  col-span-2">
           {tester.creationDate.toLocaleDateString()}
         </p>
-        <p className="text-sm text-neutral-400 overflow-clip  col-span-2">
+        <p className="text-sm overflow-clip  col-span-2">
           {tester.lastSignIn.toLocaleDateString()}
         </p>
         <div className="flex flex-row items-center gap-2  col-span-1">
@@ -167,13 +167,13 @@ export default function TestersPage() {
 
   return (
     <PageWrapper title="Testers">
-      <div className="rounded-md overflow-hidden bg-neutral-900">
-        <div className="px-4 pt-4 pb-1 bg-neutral-800 border-b border-neutral-700">
+      <div className="rounded-md overflow-hidden bg-neutral-100">
+        <div className="px-4 pt-4 pb-1 bg-neutral-200 border-b border-neutral-300">
           <div className="mb-4 flex items-center gap-3">
             <input
               type="text"
               placeholder="Filter by email, name, phone number"
-              className="bg-black px-4 py-2 rounded-md w-full"
+              className="bg-white px-4 py-2 rounded-md w-full"
               value={filterQuery}
               onChange={({ target }) => setFilterQuery(target.value)}
             />

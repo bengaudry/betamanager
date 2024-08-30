@@ -14,10 +14,10 @@ const NavElement = ({
   icon: string;
   isPremium?: boolean;
 }) => {
-  const { appid, organizationid } = useParams();
+  const { appid, organizationname } = useParams();
   const p = usePathname();
 
-  const url = `/${organizationid}/${appid}/manage/${href}`;
+  const url = `/${organizationname}/${appid}/manage/${href}`;
   const active = href === "" ? `${p}/` === url : p.includes(url);
 
   return (
@@ -25,8 +25,8 @@ const NavElement = ({
       href={url}
       className={`${
         active
-          ? "bg-neutral-800 text-white"
-          : "text-neutral-400 hover:bg-neutral-800/50 hover:text-white"
+          ? "bg-neutral-200"
+          : "text-neutral-400 hover:bg-neutral-100"
       } ${
         isPremium ? "pr-4" : "pr-8"
       } transition-colors rounded-md pl-2 py-0.5 font-medium flex items-center justify-between gap-8`}
@@ -38,41 +38,26 @@ const NavElement = ({
         <span className="text-sm text-nowrap">{title}</span>
       </div>
       {isPremium && (
-        <i className="fi fi-rr-rectangle-pro block translate-y-0.5 text-emerald-300" />
+        <i className="fi fi-rr-rectangle-pro block translate-y-0.5 text-indigo-300" />
       )}
     </Link>
   );
 };
 
-const Separator = () => <div className="w-full h-[1px] bg-neutral-800 my-2" />;
+const Separator = () => <div className="w-full h-[1px] bg-neutral-200 my-2" />;
 
 const ProjectSelector = () => {
-  const [appName, setAppName] = useState(null);
-  const { appid, organizationid } = useParams();
-
-  useEffect(() => {
-    fetch(`/api/project-details?app-id=${appid}`)
-      .then((value) => value.json())
-      .then((json) => {
-        if (!json) return;
-        console.info(json);
-        setAppName(json.name);
-      })
-      .catch((err) => {
-        console.error(err);
-        setAppName(null);
-      });
-  }, []);
+  const { appid, organizationname } = useParams();
 
   return (
     <button className="group relative text-left flex flex-row items-center gap-3">
-      <h3 className="font-semibold text-xl mb-3">{appName ?? "-"}</h3>
+      <h3 className="font-semibold text-xl mb-3">{appid}</h3>
       <div className="w-2 h-2 grid place-content-center origin-top transition-all group-hover:rotate-180">
         <i className="fi fi-rr-angle-small-down" />
       </div>
 
-      <div className="absolute top-full w-full left-0 bg-black py-2 border border-neutral-800 rounded-md translate-y-4 opacity-0 pointer-events-none group-hover:translate-y-0 group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300">
-        <Link href={`/${organizationid}`} className="flex flex-row items-center gap-2 px-4 py-1 text-neutral-500 hover:text-white hover:bg-neutral-800 transition-colors">
+      <div className="absolute top-full w-full left-0 bg-white py-2 border border-neutral-300 rounded-md translate-y-4 opacity-0 pointer-events-none group-hover:translate-y-0 group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300">
+        <Link href={`/${organizationname}`} className="flex flex-row items-center gap-2 px-4 py-1 text-neutral-400 hover:text-black hover:bg-neutral-200 transition-colors">
           <i className="block fi fi-rr-list translate-y-0.5" />
           <span>See all projects</span>
         </Link>
@@ -83,7 +68,7 @@ const ProjectSelector = () => {
 
 export function Sidebar() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light border-r border-neutral-700 h-full py-8 px-4">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light border-r border-neutral-300 h-full py-8 px-4">
       <div className="flex flex-col justify-between h-full">
         <div className="flex flex-col">
           <ProjectSelector />

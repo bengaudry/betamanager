@@ -1,6 +1,6 @@
 type Organization = {
-  name: string;
   id: string;
+  name: string;
 };
 
 type Project = {
@@ -9,5 +9,6 @@ type Project = {
   name: string;
   description: string;
   nbTesters: number;
+  visibility: "public" | "private"
   version?: string;
 };

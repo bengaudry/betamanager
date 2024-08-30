@@ -7,6 +7,5 @@ export default function AuthLayout({ children }: Readonly<PropsWithChildren>) {
   const [user, loading] = useAuth();
   const { push } = useRouter();
 
-  if (!loading && user !== null) push(`/${user.displayName}`);
   return children;
 }
