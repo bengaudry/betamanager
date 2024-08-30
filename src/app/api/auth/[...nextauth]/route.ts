@@ -4,7 +4,7 @@ import GithubProvider from "next-auth/providers/github";
 // TODO : Handling premium plans with this site : 
 // https://dev.to/nicolas_bastida/how-to-add-authentication-with-subscriptions-into-your-nextjs-app-website-1513
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   providers: [
     GithubProvider({
