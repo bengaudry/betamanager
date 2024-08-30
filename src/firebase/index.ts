@@ -1,5 +1,4 @@
 import { initializeApp } from "firebase/app";
-import { browserPopupRedirectResolver, browserSessionPersistence, getAuth, initializeAuth, type Auth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 export const FIREBASE_CONFIG = {
@@ -16,14 +15,6 @@ export const FIREBASE_CONFIG = {
 const APP = initializeApp(FIREBASE_CONFIG)
 
 export const getFirebaseApp = () => APP;
-
-// AUTH
-const auth = typeof window !== "undefined" ? initializeAuth(APP, {
-  persistence: browserSessionPersistence,
-  popupRedirectResolver: browserPopupRedirectResolver,
-}) : getAuth(APP);
-
-export const getFirebaseAuth = (): Auth => auth;
 
 const DB = getFirestore(getFirebaseApp())
 export const getFirebaseDb = () => DB;
