@@ -1,11 +1,5 @@
 "use client";
 import { PageWrapper } from "@/components/PageWrapper";
-import { getFirebaseAuth } from "@/firebase";
-import {
-  GithubAuthProvider,
-  signInWithPopup,
-  updateProfile,
-} from "firebase/auth";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -25,28 +19,7 @@ export default function LinkGithubPage() {
     const displayName = searchParams.get("organization-name");
     if (!displayName) return push("/create-org");
 
-    const provider = new GithubAuthProvider();
-    provider.addScope("repo");
-    provider.addScope("read:user");
-    provider.setCustomParameters({ allow_signup: "true" });
-
-    try {
-      setLoading(true);
-      const userCredential = await signInWithPopup(getFirebaseAuth(), provider);
-      console.info(userCredential.user.uid);
-
-      updateProfile(userCredential.user, { displayName });
-
-      // Complete user profile with api
-      await fetch(
-        `/api/create-org?uid=${userCredential.user.uid}&username=${displayName}`
-      );
-      push(`/${displayName.toLowerCase()}`);
-    } catch (err) {
-      console.error("Unable to sign in with GitHub provider.", err);
-    } finally {
-      setLoading(false);
-    }
+    // TODO : Create organization
   };
 
   return (
