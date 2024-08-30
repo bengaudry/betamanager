@@ -16,9 +16,7 @@ export default function ProjectPage() {
   const { push } = useRouter();
 
   const [projects, error, loading] = useFetch<Project[]>(
-    `/api/organization-projects?organization-name=${organizationname}&curr-uid=${user?.uid}`,
-    fetch,
-    {}
+    `/api/organization-projects?organization-name=${organizationname}&curr-uid=${user?.uid}`
   );
 
   const [newProjectPopoverOpened, setNewProjectPopoverOpened] = useState(false);

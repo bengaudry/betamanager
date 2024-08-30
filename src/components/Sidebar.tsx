@@ -24,9 +24,7 @@ const NavElement = ({
     <Link
       href={url}
       className={`${
-        active
-          ? "bg-neutral-200"
-          : "text-neutral-400 hover:bg-neutral-100"
+        active ? "bg-neutral-200" : "text-neutral-400 hover:bg-neutral-100"
       } ${
         isPremium ? "pr-4" : "pr-8"
       } transition-colors rounded-md pl-2 py-0.5 font-medium flex items-center justify-between gap-8`}
@@ -57,7 +55,10 @@ const ProjectSelector = () => {
       </div>
 
       <div className="absolute top-full w-full left-0 bg-white py-2 border border-neutral-300 rounded-md translate-y-4 opacity-0 pointer-events-none group-hover:translate-y-0 group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300">
-        <Link href={`/${organizationname}`} className="flex flex-row items-center gap-2 px-4 py-1 text-neutral-400 hover:text-black hover:bg-neutral-200 transition-colors">
+        <Link
+          href={`/${organizationname}`}
+          className="flex flex-row items-center gap-2 px-4 py-1 text-neutral-400 hover:text-black hover:bg-neutral-200 transition-colors"
+        >
           <i className="block fi fi-rr-list translate-y-0.5" />
           <span>See all projects</span>
         </Link>
@@ -74,7 +75,7 @@ export function Sidebar() {
           <ProjectSelector />
           <NavElement title="Dashboard" href="" icon="apps" />
           <Separator />
-          <NavElement title="Testers" href="testers" icon="users-alt" />
+          {/* <NavElement title="Testers" href="testers" icon="users-alt" /> */}
           <NavElement title="Issues" href="issues" icon="shield-exclamation" />
           <NavElement
             title="Suggestions"

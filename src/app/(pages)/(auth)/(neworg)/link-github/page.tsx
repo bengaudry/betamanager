@@ -39,7 +39,7 @@ export default function LinkGithubPage() {
 
       // Complete user profile with api
       await fetch(
-        `/api/sign-in?uid=${userCredential.user.uid}&username=${displayName}`
+        `/api/create-org?uid=${userCredential.user.uid}&username=${displayName}`
       );
       push(`/${displayName.toLowerCase()}`);
     } catch (err) {
@@ -62,7 +62,7 @@ export default function LinkGithubPage() {
           className="bg-gradient-to-b from-neutral-800 to-neutral-900 px-8 text-white rounded-md py-1 w-full shadow-lg shadow-neutral-200"
         >
           <i className="fi fi-brands-github text-2xl translate-y-1 inline-block mr-2" />
-          Sign in with GitHub
+          Link GitHub account
         </button>
       </PageWrapper>
     </div>
