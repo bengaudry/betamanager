@@ -1,113 +1,30 @@
 "use client";
-import { Label } from "@/components/Label";
-import { PageWrapper } from "@/components/PageWrapper";
-import { Popover } from "@/components/Popover";
-import { TextInput } from "@/components/TextInput";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { getFirebaseAuth } from "@/firebase";
-import { useAuth } from "@/hooks/useAuth";
-import { signOut } from "firebase/auth";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { signOut } from "firebase/auth";
 
-const NewProjectPopover = ({
-  opened,
-  onClose,
-  onSubmit,
-}: {
-  opened: boolean;
-  onClose: () => void;
-  onSubmit: (
-    name: string,
-    description: string,
-    visibility: "public" | "private"
-  ) => Promise<any>;
-}) => {
-  const [visibility, setVisibility] = useState<"public" | "private">("private");
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+import { getFirebaseAuth } from "@/firebase";
+import { useAuth } from "@/hooks/useAuth";
+import { useFetch } from "@/hooks/useFetch";
+import { PageWrapper } from "@/components/PageWrapper";
+import { NewProjectPopover } from "@/components/ProjectsPage";
 
-  return (
-    <Popover
-      opened={opened}
-      onClose={onClose}
-      onAsyncSubmit={() => onSubmit(name, description, visibility)}
-    >
-      <TextInput
-        label="Project name"
-        value={name}
-        onChangeText={setName}
-        placeholder="my-new-project"
-      />
-      <TextInput
-        label="Project description"
-        value={description}
-        onChangeText={setDescription}
-        placeholder="A short description for your project"
-      />
-
-      <div>
-        <Label label="Visibility" />
-        <Select
-          onValueChange={(value: "private" | "public") => setVisibility(value)}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue
-              placeholder={visibility[0].toUpperCase() + visibility.slice(1)}
-            />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="private" defaultChecked>
-              Private
-            </SelectItem>
-            <SelectItem value="public">Public</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-    </Popover>
-  );
-};
-export default function ProjectsPage() {
+export default function ProjectPage() {
   const { organizationname } = useParams();
   const [user] = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [newProjectPopoverOpened, setNewProjectPopoverOpened] = useState(false);
   const { push } = useRouter();
 
-  const [projects, setProjects] = useState<Array<Project> | null>(null);
+  const [projects, error, loading] = useFetch<Project[]>(
+    `/api/organization-projects?organization-name=${organizationname}&curr-uid=${user?.uid}`,
+    fetch,
+    {}
+  );
 
-  const prettifyNbUsers = (nb?: number) => {
-    if (!nb) return "-";
-    if (nb < 1000) return nb;
-    if (nb < 1000000) return (nb / 1000).toFixed(1) + "k";
-    return (nb / 1000000).toFixed(1) + "M";
-  };
+  const [newProjectPopoverOpened, setNewProjectPopoverOpened] = useState(false);
 
   const canCreateNewProject =
     (user && user.isPremium) || (projects && projects.length <= 2) || !projects;
-
-  useEffect(() => {
-    setLoading(true);
-    if (!user) return;
-
-    fetch(
-      `/api/organization-projects?organization-name=${organizationname}&curr-uid=${user.uid}`
-    )
-      .then((value) => value.json())
-      .then((value) => setProjects(value))
-      .catch((err) => {
-        console.error(err);
-        setProjects(null);
-      })
-      .finally(() => setLoading(false));
-  }, [organizationname, user]);
 
   const handleCreateNewProject = async (
     name: string,
@@ -185,10 +102,7 @@ export default function ProjectsPage() {
 
           <button
             onClick={() => {
-              setLoading(true);
-              signOut(getFirebaseAuth())
-                .then(() => push("/"))
-                .finally(() => setLoading(false));
+              signOut(getFirebaseAuth()).then(() => push("/"));
             }}
             className="px-4 py-2 rounded-md text-white font-medium bg-red-500 hover:bg-red-500/40 transition-colors"
           >
@@ -213,12 +127,7 @@ export default function ProjectsPage() {
                 {project.description}
               </p>
 
-              <div className="flex items-center justify-between text-neutral-500 text-xs w-full">
-                <div className="flex flex-row items-center gap-1">
-                  <i className="fi fi-rr-user" />
-                  <p>{prettifyNbUsers(project.nbTesters)}</p>
-                </div>
-
+              <div className="flex items-center justify-end text-neutral-500 text-xs w-full">
                 <p>{project.version}</p>
               </div>
             </Link>
