@@ -8,8 +8,6 @@ export async function GET(request: NextRequest) {
   const organizationNameParam = params.get("organization-name");
   const currentUid = params.get("curr-uid");
 
-  console.log(request.url);
-
   if (organizationNameParam === null || organizationNameParam === "") {
     return new Response(
       "Parameter <organization-name> was not provided or was empty.",
