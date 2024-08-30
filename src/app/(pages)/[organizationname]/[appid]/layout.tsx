@@ -19,7 +19,7 @@ export default function OrgAppLayout({
     if (!user) return;
     setLoading(true);
     fetch(
-      `/api/organization-projects?organization-name=${organizationname}&curr-uid=${user.uid}`
+      `/api/organization-projects?organization-name=${organizationname}&curr-uid=${user.id}`
     )
       .then((value) => value.json())
       .then((json: Project[]) => {
