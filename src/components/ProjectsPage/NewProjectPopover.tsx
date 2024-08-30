@@ -12,7 +12,6 @@ import {
 } from "../ui/select";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
 
 export const NewProjectButton = ({
   projects,
@@ -21,12 +20,14 @@ export const NewProjectButton = ({
   projects: Project[];
   onOpen: () => void;
 }) => {
-  const [user] = useAuth();
   const { organizationname } = useParams();
   const { data } = useSession();
+  const user = data?.user ?? null;
 
   const canCreateNewProject =
-    (user && user.isPremium) || (projects && projects.length <= 2) || !projects;
+    (user && user.subscription === "premium") ||
+    (projects && projects.length <= 2) ||
+    !projects;
 
   /* Show an add button if the visitor of the page is the organization shown */
   if (!data?.user?.name || !organizationname) return null;
@@ -113,9 +114,10 @@ export function NewProjectPopover({
 }
 
 export function NewProjectClient({ projects }: { projects: Project[] }) {
-  const [opened, setOpened] = useState(false);
-  const [user] = useAuth();
   const { organizationname } = useParams();
+  const { data: session } = useSession();
+  const user = session?.user ?? null;
+  const [opened, setOpened] = useState(false);
 
   const handleCreateNewProject = async (
     name: string,
@@ -127,7 +129,7 @@ export function NewProjectClient({ projects }: { projects: Project[] }) {
       fetch("/api/organization-projects", {
         method: "POST",
         body: JSON.stringify({
-          organizationId: user.uid,
+          organizationId: user.id,
           organizationName: organizationname,
           name,
           description,

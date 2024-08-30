@@ -1,5 +1,3 @@
-type User = DefaultUser & { id: string; subscription: SubscriptionPlan };
-
 type Organization = {
   id: string;
   name: string;

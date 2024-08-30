@@ -1,5 +1,4 @@
 "use client";
-import { useAuth } from "@/hooks/useAuth";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { PropsWithChildren, useEffect } from "react";
@@ -30,9 +29,9 @@ export function PremiumGuarded({
   children,
   href,
 }: PropsWithChildren & { href?: string }) {
-  const [user, loading] = useAuth();
+  const { data: session } = useSession();
 
-  useGuard(href ?? "/", !loading && (user === null || !user.isPremium));
+  useGuard(href ?? "/", session === null || session.user?.subscription === "free");
 
-  return loading ? null : children;
+  return children;
 }
