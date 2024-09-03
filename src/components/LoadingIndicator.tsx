@@ -6,7 +6,7 @@ export function LoadingIndicator({ loading }: { loading: boolean }) {
   
   return (
     <div className="h-screen w-screen fixed inset-0 bg-black/50 z-50">
-      <Box sx={{ width: "100%" }}>
+      <Box bgcolor={"indigo"} sx={{ width: "100%" }}>
         <LinearProgress />
       </Box>
     </div>

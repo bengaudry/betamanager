@@ -1,4 +1,5 @@
 import { getFirebaseDb } from "@/firebase";
+import { prisma } from "@/lib/db";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { NextRequest } from "next/server";
 

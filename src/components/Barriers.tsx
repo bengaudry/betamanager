@@ -20,7 +20,12 @@ export function AuthGuarded({
 }: PropsWithChildren & { href?: string }) {
   const { data: session } = useSession();
 
+  console.log(session)
+
   useGuard(href ?? "/signin", session === null);
+
+  // Return nothing if session is loading
+  if (session === undefined) return null;
 
   return children;
 }
@@ -32,6 +37,9 @@ export function PremiumGuarded({
   const { data: session } = useSession();
 
   useGuard(href ?? "/", session === null || session.user?.subscription === "free");
+
+  // Return nothing if session is loading
+  if (session === undefined) return null;
 
   return children;
 }

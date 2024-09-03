@@ -1,15 +1,27 @@
 "use client";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 import { LoadingIndicator } from "@/components/LoadingIndicator";
+import { useSearchParams } from "next/navigation";
+import { getBaseUrl } from "@/lib/utils";
 
 export default function SignInPage() {
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const redirectURI = searchParams.get("redirect-uri");
+  const { push } = useRouter();
 
   const handleSignIn = async () => {
     setLoading(true);
-    signIn("github").catch(() => setLoading(false));
+    try {
+      await signIn("github");
+      if (redirectURI) push(`${getBaseUrl()}/${redirectURI}`);
+    } catch (err) {
+      console.log("sign in err :", err)
+      setLoading(false);
+    }
   };
 
   return (

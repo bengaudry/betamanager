@@ -1,9 +1,9 @@
 "use client";
-import { PropsWithChildren } from "react";
 import { SessionProvider } from "next-auth/react";
+import { PropsWithChildren } from "react";
 
-export default function PagesLayout({children}: Readonly<PropsWithChildren>) {
+export function SessionWrapper({ children }: PropsWithChildren) {
     return <SessionProvider>
         {children}
     </SessionProvider>
-} 
+}

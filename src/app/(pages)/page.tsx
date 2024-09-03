@@ -34,9 +34,7 @@ export default function LandingPage() {
                   small
                   secondary
                   label="Sign in"
-                  onClick={() =>
-                    push("/signin")
-                  }
+                  onClick={() => push("/signin")}
                 />
                 <CTA
                   small
@@ -49,23 +47,25 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      <section className="relative flex flex-col items-center place-content-center py-52 bg-gradient-to-b from-indigo-400/0 to-indigo-400/20">
-        <i className="absolute left-4 top-20 -rotate-12 fi fi-rr-shield-exclamation text-indigo-700 text-9xl blur-sm" />
-        <i className="absolute right-8 bottom-10 rotate-12 fi fi-rr-lightbulb-on text-indigo-700 text-9xl blur-sm" />
+      <section className="bg-gradient-to-b from-indigo-400/0 to-indigo-400/20">
+        <div className="relative max-w-screen-lg mx-auto flex flex-col items-center place-content-center py-52">
+          <i className="absolute left-4 top-20 -rotate-12 fi fi-rr-shield-exclamation text-indigo-700 text-9xl blur-sm" />
+          <i className="absolute right-8 bottom-10 rotate-12 fi fi-rr-lightbulb-on text-indigo-700 text-9xl blur-sm" />
 
-        <h1 className="text-5xl font-bold text-center">
-          Launch your app,
-          <br /> get feedback
-        </h1>
-        <p className="mt-2 text-lg text-neutral-500">
-          Get started by creating an organization
-        </p>
-        <CTA
-          label="Create an organization"
-          onClick={() => push("/create-org")}
-          className="mt-4 shadow-2xl shadow-indigo-800"
-          rightIcon="arrow-right"
-        />
+          <h1 className="text-5xl font-bold text-center">
+            Launch your app,
+            <br /> get feedback
+          </h1>
+          <p className="mt-2 text-lg text-neutral-500">
+            Get started by creating an organization
+          </p>
+          <CTA
+            label="Create an organization"
+            onClick={() => push("/create-org")}
+            className="mt-4 shadow-2xl shadow-indigo-800"
+            rightIcon="arrow-right"
+          />
+        </div>
       </section>
 
       <section className="py-20">
