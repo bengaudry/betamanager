@@ -1,9 +1,8 @@
 import { PageWrapper } from "@/components/PageWrapper";
 import { NewProjectClient } from "@/components/ProjectsPage";
 import { SignOutButton } from "@/components/SignOutBtn";
-import { prisma } from "@/lib/db";
+import { auth } from "@/lib/auth";
 import { getBaseUrl } from "@/lib/utils";
-import { getServerSession } from "next-auth";
 import Link from "next/link";
 
 export default async function ProjectsPage({
@@ -11,7 +10,7 @@ export default async function ProjectsPage({
 }: {
   params: { organizationname: string };
 }) {
-  const session = await getServerSession();
+  const session = await auth();
   const user = session?.user ?? null;
 
   const res = await fetch(
@@ -36,11 +35,10 @@ export default async function ProjectsPage({
               <h1 className="font-bold text-3xl leading-7">Projects</h1>
               <p className="text-neutral-500 text-lg">
                 @{params.organizationname}{" "}
-                {user && user?.subscription === "premium" && (
+                {/* {user && user?.subscription === "premium" && (
                   <i className="fi fi-rr-rectangle-pro text-indigo-300 inline-block translate-y-0.5" />
-                )}
+                )} */}
               </p>
-              <p>{JSON.stringify(user?.email ?? "null")}</p>
             </div>
           </div>
 

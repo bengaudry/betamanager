@@ -1,3 +1,5 @@
+import { Session } from "next-auth";
+
 type Organization = {
   id: string;
   name: string;
@@ -14,3 +16,5 @@ type Project = {
 };
 
 type SubscriptionPlan = "free" | "premium";
+
+type PropsWithSession = { session: Session | null }

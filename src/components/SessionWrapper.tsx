@@ -1,9 +1,11 @@
-"use client";
+import { auth } from "@/lib/auth";
 import { SessionProvider } from "next-auth/react";
 import { PropsWithChildren } from "react";
 
-export function SessionWrapper({ children }: PropsWithChildren) {
-    return <SessionProvider>
+export async function SessionWrapper({ children }: PropsWithChildren) {
+    const session = await auth();
+
+    return <SessionProvider session={session}>
         {children}
-    </SessionProvider>
+    </SessionProvider>;
 }
