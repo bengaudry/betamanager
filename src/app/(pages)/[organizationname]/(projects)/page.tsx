@@ -3,6 +3,8 @@ import { NewProjectClient } from "@/components/ProjectsPage";
 import { SignOutButton } from "@/components/SignOutBtn";
 import { auth } from "@/lib/auth";
 import { getBaseUrl } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+
 import Link from "next/link";
 
 export default async function ProjectsPage({
@@ -25,12 +27,10 @@ export default async function ProjectsPage({
       <PageWrapper>
         <header className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">
-            <img
-              src={user?.image ?? "/no-profile-pic.png"}
-              className="w-12 h-12 rounded-full"
-              width={48}
-              height={48}
-            />
+            <Avatar>
+              <AvatarImage src={user?.image ?? "/no-profile-pic.png"} />
+              <AvatarFallback>{params.organizationname[0].toUpperCase()}</AvatarFallback>
+            </Avatar>
             <div>
               <h1 className="font-bold text-3xl leading-7">Projects</h1>
               <p className="text-neutral-500 text-lg">

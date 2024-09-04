@@ -25,7 +25,9 @@ export const NewProjectButton = ({
   const user = data?.user ?? null;
 
   const canCreateNewProject =
-    (user && user.subscription === "premium") ||
+    (user 
+      //&& user.subscription === "premium"
+    ) ||
     (projects && projects.length <= 2) ||
     !projects;
 
@@ -42,7 +44,7 @@ export const NewProjectButton = ({
       }}
       className="group relative h-fit w-full xs:h-36 py-2 grid place-content-center justify-items-center rounded-lg border border-neutral-300 hover:bg-neutral-100 transition-colors"
     >
-      <p className="text-neutral-500 flex items-center gap-2">
+      <p className="text-neutral-400 flex items-center gap-2">
         <span className="xs:hidden">New project</span>
         <i className="inline-block fi fi-rr-plus xs:text-5xl xs:group-hover:scale-125 transition-transform origin-center translate-y-0.5" />
       </p>
