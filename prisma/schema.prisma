@@ -87,7 +87,7 @@ model Suggestion {
   title        String
   content      String
   imagesUrl    String[]
-  creationDate Int
+  creationDate DateTime @default(now())
   device       String
   ipAdress     String
   project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
@@ -103,7 +103,7 @@ model Issue {
   subCategory  String?
   content      String
   imagesUrl    String[]
-  creationDate Int
+  creationDate DateTime @default(now())
   device       String
   ipAdress     String
   project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)

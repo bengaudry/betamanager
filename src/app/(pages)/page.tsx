@@ -3,7 +3,6 @@ import Link from "next/link";
 import { CTA } from "@/components/CTA";
 import { auth } from "@/lib/auth";
 import { AuthButtons } from "@/components/LandingPage/AuthButtons";
-import { PropsWithSession } from "../../../app";
 
 const HeaderNavBar = ({ session }: PropsWithSession) => (
   <nav className="w-full px-4 py-2 md:px-8 md:py-4">
