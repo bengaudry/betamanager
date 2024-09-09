@@ -54,7 +54,7 @@ export default async function ProjectsPage({
               <Link
                 key={idx}
                 href={`/${params.username}/${project.name}/manage`}
-                className="w-full h-36 py-3 px-6 flex flex-col justify-end rounded-lg border hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+                className="w-full h-36 py-3 px-6 flex flex-col justify-end rounded-lg border hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors"
               >
                 <p className="font-semibold mb-1 capitalize">{project.name}</p>
                 <p className="text-neutral-400 text-left leading-4 text-sm mb-2">
