@@ -1,5 +1,6 @@
 import { CTA } from "@/components/CTA";
 import { PageWrapper } from "@/components/PageWrapper";
+import { DataTable } from "@/components/ui/datatable";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { getBaseUrl } from "@/lib/utils";
@@ -36,7 +37,25 @@ export default async function IssuesPage({
 
   return (
     <PageWrapper title="Issues">
-      <div className="rounded-md overflow-hidden bg-neutral-100">
+      <DataTable data={issues} />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {/* <div className="rounded-md overflow-hidden bg-neutral-100">
         <div className="px-4 pt-4 pb-1 bg-neutral-200 border-b border-neutral-300">
           <div className="mb-4 flex items-center gap-3">
             <input
@@ -63,7 +82,7 @@ export default async function IssuesPage({
             </p>
           )}
         </div>
-      </div>
+      </div> */}
     </PageWrapper>
   );
 }

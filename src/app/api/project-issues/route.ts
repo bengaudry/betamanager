@@ -16,6 +16,8 @@ export async function GET(request: NextRequest) {
       },
     });
 
+    console.info("ISSUES :", issues)
+
     return Response.json(issues, { status: 200 });
   } catch (err) {
     return Response.json(ERROR_TYPES["prisma/prisma-unknown-error"], {

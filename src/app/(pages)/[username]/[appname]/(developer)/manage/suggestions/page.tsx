@@ -10,7 +10,6 @@ export default async function SuggestionsPage() {
       title="Suggestions"
       subtitle="Here you can find all the improvments that you can make to your app that have been suggested by your testers"
     >
-      {JSON.stringify(suggestions)}
     </PageWrapper>
   );
 }
