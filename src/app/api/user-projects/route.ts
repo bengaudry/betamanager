@@ -1,22 +1,16 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
+import { checkParameters } from "@/lib/api";
 
 export async function GET(request: NextRequest) {
-  const params = request.nextUrl.searchParams;
+  const params = checkParameters(request, [
+    { name: "username", conditions: { strLength: 3 } },
+    { name: "curr-uid", optionnal: true },
+  ]);
 
-  const userNameParam = params.get("username");
-  const currentUid = params.get("curr-uid");
+  if (params instanceof Response) return params;
+  const { username: userName, "curr-uid": currentUid } = params;
 
-  if (userNameParam === null || userNameParam === "") {
-    return new Response(
-      "Parameter <username> was not provided or was empty.",
-      {
-        status: 400,
-      }
-    );
-  }
-
-  const userName = userNameParam;
   const userProjects = await prisma.project.findMany({ where: { userName } });
 
   const projectsVisibleToCurrentUser = userProjects.filter(
@@ -33,15 +27,6 @@ export async function POST(request: NextRequest) {
     const { description, name, userId, userName, visibility } =
       await request.json();
 
-    console.info(`
-      [DESCRIPTION]: ${description},
-      [NAME]: ${name},
-      [ORGANIZATION_ID]: ${userId},
-      [ORGANIZATION_NAME]: ${userName},
-      [VISIBILITY]: ${visibility}
-    `);
-
-    console.log(userId);
     // TODO : check if user exists and if name corresponds
 
     await prisma.project.create({

@@ -68,13 +68,45 @@ model VerificationToken {
 }
 
 model Project {
-  id               String @id @default(cuid())
-  userName String
-  userId   String
-  name             String
-  description      String
-  visibility       String
-  user             User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id          String       @id @default(cuid())
+  userName    String
+  userId      String
+  name        String
+  description String
+  visibility  String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  suggestions Suggestion[]
+  issues      Issue[]
 
   @@map("projects")
+}
+
+model Suggestion {
+  id           String   @id @default(cuid())
+  projectId    String
+  title        String
+  content      String
+  imagesUrl    String[]
+  creationDate Int
+  device       String
+  ipAdress     String
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("suggestions")
+}
+
+model Issue {
+  id           String   @id @default(cuid())
+  projectId    String
+  title        String
+  category     String?
+  subCategory  String?
+  content      String
+  imagesUrl    String[]
+  creationDate Int
+  device       String
+  ipAdress     String
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("issues")
 }

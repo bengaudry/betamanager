@@ -1,32 +1,25 @@
-import { getFirebaseDb } from "@/firebase";
-import { collection, doc, getDocs, query, where } from "firebase/firestore";
 import { NextRequest } from "next/server";
+import { prisma } from "@/lib/db";
+import { checkParameters } from "@/lib/api";
+import { ERROR_TYPES } from "@/constants/errors";
 
 export async function GET(request: NextRequest) {
-  const params = request.nextUrl.searchParams;
+  try {
+    const params = checkParameters(request, [{ name: "project-id" }]);
 
-  const appName = params.get("app-name");
-  if (!appName || appName === "")
-    return new Response("Parameter <app-name> was not provided or was empty.", {
-      status: 400,
+    if (params instanceof Response) return params;
+    const { "project-id": projectId } = params;
+
+    const issues = await prisma.issue.findMany({
+      where: {
+        projectId,
+      },
     });
 
-  const currUid = params.get("curr-uid");
-  if (!currUid || currUid === "")
-    return new Response("Parameter <curr-uid> was not provided or was empty.", {
-      status: 400,
+    return Response.json(issues, { status: 200 });
+  } catch (err) {
+    return Response.json(ERROR_TYPES["prisma/prisma-unknown-error"], {
+      status: 500,
     });
-
-  const collectionRef = collection(getFirebaseDb(), "projects");
-  const q = query(collectionRef, where("name", "==", appName), where("userId", "==", currUid));
-  const querySnapshot = await getDocs(q);
-
-  const docs: any = [];
-  querySnapshot.forEach((doc) => {
-    if (!doc.exists()) return;
-    docs.push(doc);
-  });
-
-  const response = docs.length >= 1 ? docs[0] : null;
-  return Response.json(response, { status: 200 });
+  }
 }
