@@ -34,10 +34,10 @@ const HeroBanner = () => (
         <br /> get feedback
       </h1>
       <p className="mt-2 text-lg text-neutral-500">
-        Get started by creating an organization
+        Get started by creating an account
       </p>
       <CTA
-        label="Create an organization"
+        label="Create an account"
         // onClick={() => push("/create-org")}
         className="mt-4 shadow-2xl shadow-indigo-800"
         rightIcon="arrow-right"

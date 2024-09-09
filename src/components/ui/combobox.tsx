@@ -1,4 +1,4 @@
-import * as React from "react";
+"use client";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -16,6 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useState } from "react";
 
 export function Combobox<V extends string>({
   items,
@@ -26,8 +27,8 @@ export function Combobox<V extends string>({
   onChange?: (value: V) => void;
   defaultSelected?: V;
 }) {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState<V | null>(
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<V | null>(
     defaultSelected ?? items[0].value ?? null
   );
 
@@ -60,7 +61,10 @@ export function Combobox<V extends string>({
                     setValue(
                       currentValue === value ? null : (currentValue as V)
                     );
-                    if (onChange) onChange(currentValue as V);
+                    if (onChange) {
+                      console.log("changing to", currentValue);
+                      onChange(currentValue as V);
+                    }
                     setOpen(false);
                   }}
                 >

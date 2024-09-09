@@ -16,15 +16,15 @@ export default function LinkGithubPage() {
   }, []);
 
   const handleLink = async () => {
-    const displayName = searchParams.get("organization-name");
+    const displayName = searchParams.get("user-name");
     if (!displayName) return push("/create-org");
 
-    // TODO : Create organization
+    // TODO : Create user
   };
 
   return (
     <div className="max-w-screen-lg mx-auto">
-      <PageWrapper title="Create an organization" loading={loading}>
+      <PageWrapper title="Create an user" loading={loading}>
         <p className="text-sm text-neutral-500 leading-4 mb-4">
           {" "}
           We use GitHub to create your user profile. This is the only method of

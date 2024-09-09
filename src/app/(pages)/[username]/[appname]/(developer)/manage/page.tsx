@@ -3,11 +3,11 @@ import { PageWrapper } from "@/components/PageWrapper";
 import { useParams } from "next/navigation";
 
 export default function DashboardPage() {
-  const { appid } = useParams();
+  const { appname } = useParams();
 
   return (
     <PageWrapper title="Dashboard">
-      <p>{appid}</p>
+      <p>{appname}</p>
     </PageWrapper>
   );
 }

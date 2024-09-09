@@ -3,24 +3,25 @@ import { NewProjectClient } from "@/components/ProjectsPage";
 import { SignOutButton } from "@/components/SignOutBtn";
 import { auth } from "@/lib/auth";
 import { getBaseUrl } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import Link from "next/link";
 
 export default async function ProjectsPage({
   params,
 }: {
-  params: { organizationname: string };
+  params: { username: string };
 }) {
   const session = await auth();
   const user = session?.user ?? null;
 
   const res = await fetch(
-    `${getBaseUrl()}/api/organization-projects?organization-name=${
-      params.organizationname
-    }&user-id=${user?.name}`
+    `${getBaseUrl()}/api/user-projects?username=${params.username}&curr-uid=${
+      user?.id
+    }`
   );
-  const projects = (await res.json()) as Project[];
+  const projects: Project[] = await res.json();
+  console.log("projects", projects);
 
   return (
     <div className="max-w-screen-xl mx-auto">
@@ -29,12 +30,14 @@ export default async function ProjectsPage({
           <div className="flex items-center gap-4">
             <Avatar>
               <AvatarImage src={user?.image ?? "/no-profile-pic.png"} />
-              <AvatarFallback>{params.organizationname[0].toUpperCase()}</AvatarFallback>
+              <AvatarFallback>
+                {params.username[0].toUpperCase()}
+              </AvatarFallback>
             </Avatar>
             <div>
               <h1 className="font-bold text-3xl leading-7">Projects</h1>
               <p className="text-neutral-500 text-lg">
-                @{params.organizationname}{" "}
+                @{params.username}{" "}
                 {/* {user && user?.subscription === "premium" && (
                   <i className="fi fi-rr-rectangle-pro text-indigo-300 inline-block translate-y-0.5" />
                 )} */}
@@ -50,7 +53,7 @@ export default async function ProjectsPage({
             return (
               <Link
                 key={idx}
-                href={`/${params.organizationname}/${project.name}/manage`}
+                href={`/${params.username}/${project.name}/manage`}
                 className="w-full h-36 py-3 px-6 flex flex-col justify-end rounded-lg border border-neutral-300 hover:bg-neutral-100 transition-colors"
               >
                 <p className="font-semibold mb-1 capitalize">{project.name}</p>

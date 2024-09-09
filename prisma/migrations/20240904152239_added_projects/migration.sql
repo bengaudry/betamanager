@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE "Project" (
     "id" TEXT NOT NULL,
-    "organizationId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "visibility" TEXT NOT NULL,
@@ -10,4 +10,4 @@ CREATE TABLE "Project" (
 );
 
 -- AddForeignKey
-ALTER TABLE "Project" ADD CONSTRAINT "Project_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Project" ADD CONSTRAINT "Project_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

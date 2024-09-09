@@ -9,7 +9,7 @@ const SuggestionForm = () => <>Suggestion</>;
 const IssueForm = () => <>Issue</>;
 
 export default function AppBetaPage() {
-  const { appid } = useParams();
+  const { appname } = useParams();
   const [popoverOpened, setPopoverOpened] = useState(false);
   const [popoverContent, setPopoverContent] = useState<"issue" | "suggestion">(
     "issue"
@@ -46,7 +46,7 @@ export default function AppBetaPage() {
               height={96}
             />
             <h1 className="text-center text-4xl font-bold">
-              {appid[0].toUpperCase() + appid.slice(1)}
+              {appname[0].toUpperCase() + appname.slice(1)}
             </h1>
             <p className="max-w-sm mx-auto leading-4">
               This is the description of the app. It can be quite long but maybe

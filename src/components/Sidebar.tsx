@@ -1,10 +1,12 @@
 "use client";
 import Link from "next/link";
-import { useParams, usePathname, useRouter } from "next/navigation";
-import { PropsWithSession } from "../../app";
-import { Avatar, AvatarImage } from "./ui/avatar";
-import { AvatarFallback } from "@radix-ui/react-avatar";
+import { redirect, useParams, usePathname, useRouter } from "next/navigation";
+import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { Combobox } from "./ui/combobox";
+import { User } from "next-auth";
+import { getBaseUrl } from "@/lib/utils";
+import { useState } from "react";
+import { LoadingIndicator } from "./LoadingIndicator";
 
 const SidebarElement = ({
   title,
@@ -17,10 +19,10 @@ const SidebarElement = ({
   icon: string;
   isPremium?: boolean;
 }) => {
-  const { appid, organizationname } = useParams();
+  const { appname, username } = useParams();
   const p = usePathname();
 
-  const url = `/${organizationname}/${appid}/manage/${href}`;
+  const url = `/${username}/${appname}/manage/${href}`;
   const active = href === "" ? `${p}/` === url : p.includes(url);
 
   return (
@@ -55,7 +57,11 @@ export function Sidebar() {
           <SidebarElement title="Dashboard" href="" icon="apps" />
           <Separator />
           {/* <SidebarElement title="Testers" href="testers" icon="users-alt" /> */}
-          <SidebarElement title="Issues" href="issues" icon="shield-exclamation" />
+          <SidebarElement
+            title="Issues"
+            href="issues"
+            icon="shield-exclamation"
+          />
           <SidebarElement
             title="Suggestions"
             href="suggestions"
@@ -75,30 +81,47 @@ export function Sidebar() {
   );
 }
 
-export function Navbar({ session }: PropsWithSession) {
-  const user = session?.user ?? undefined;
-  const { appid, organizationname } = useParams();
+export const NavbarUserDisplayer = ({ user }: { user?: User }) => {
+  const { username } = useParams();
   const { push } = useRouter();
 
   return (
-    <header className="w-full flex sticky top-0 items-center gap-3 border-b border-neutral-300 py-2 px-4">
-      <button className="group flex gap-2" onClick={() => push(`/${organizationname}`)}>
-        <Avatar className="w-6 h-6">
-          <AvatarImage src={user?.image ?? undefined} />
-          <AvatarFallback>
-            {user?.name && user.name[0].toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
-        <span className="font-medium text-neutral-400 group-hover:text-black transition-colors">{user?.name}</span>
-      </button>
+    <button className="group flex gap-2" onClick={() => push(`/${username}`)}>
+      <Avatar className="w-6 h-6">
+        <AvatarImage src={user?.image ?? undefined} />
+        <AvatarFallback>
+          {user?.name && user.name[0].toUpperCase()}
+        </AvatarFallback>
+      </Avatar>
+      <span className="font-medium text-neutral-400 group-hover:text-black transition-colors">
+        {user?.name}
+      </span>
+    </button>
+  );
+};
 
-      <span className="text-xl text-neutral-300">/</span>
+export function ProjectSelector({ projects }: { projects: Project[] }) {
+  const { appname, username } = useParams();
+  const { push } = useRouter();
+  const [loading, setLoading] = useState(false);
 
-      <div>
-        <Combobox
-          items={[{ value: appid as string, label: appid as string }]}
-        />
-      </div>
-    </header>
+  return (
+    <>
+      <LoadingIndicator loading={loading} />
+      <Combobox
+        defaultSelected={appname as string}
+        onChange={(projectName) => {
+          setLoading(true);
+          setTimeout(() => {
+            push(`/${username}/${projectName}/manage`);
+            setLoading(false);
+          }, 1000);
+        }}
+        items={projects.map(({ name }) => ({
+          value: name.toLowerCase().replaceAll(" ", "-"),
+          label: name,
+        }))}
+      />
+    </>
   );
 }

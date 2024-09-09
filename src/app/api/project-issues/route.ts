@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     });
 
   const collectionRef = collection(getFirebaseDb(), "projects");
-  const q = query(collectionRef, where("name", "==", appName), where("organizationId", "==", currUid));
+  const q = query(collectionRef, where("name", "==", appName), where("userId", "==", currUid));
   const querySnapshot = await getDocs(q);
 
   const docs: any = [];

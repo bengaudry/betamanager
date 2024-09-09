@@ -68,12 +68,13 @@ model VerificationToken {
 }
 
 model Project {
-  id             String @id @default(cuid())
-  organizationId String
-  name           String
-  description    String
-  visibility     String
-  user           User   @relation(fields: [organizationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id               String @id @default(cuid())
+  userName String
+  userId   String
+  name             String
+  description      String
+  visibility       String
+  user             User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("projects")
 }

@@ -36,7 +36,7 @@ export function PremiumGuarded({
 }: PropsWithChildren & { href?: string }) {
   const { data: session } = useSession();
 
-  useGuard(href ?? "/", session === null || session.user?.subscription === "free");
+  // useGuard(href ?? "/", session === null || session.user?.subscription === "free");
 
   // Return nothing if session is loading
   if (session === undefined) return null;

@@ -20,7 +20,7 @@ export const NewProjectButton = ({
   projects: Project[];
   onOpen: () => void;
 }) => {
-  const { organizationname } = useParams();
+  const { username } = useParams();
   const { data } = useSession();
   const user = data?.user ?? null;
 
@@ -31,8 +31,8 @@ export const NewProjectButton = ({
     (projects && projects.length <= 2) ||
     !projects;
 
-  /* Show an add button if the visitor of the page is the organization shown */
-  if (!data?.user?.name || !organizationname) return null;
+  /* Show an add button if the visitor of the page is the user shown */
+  if (!data?.user?.name || !username) return null;
   return (
     <button
       onClick={() => {
@@ -116,7 +116,7 @@ export function NewProjectPopover({
 }
 
 export function NewProjectClient({ projects }: { projects: Project[] }) {
-  const { organizationname } = useParams();
+  const { username } = useParams();
   const { data: session } = useSession();
   const user = session?.user ?? null;
   const [opened, setOpened] = useState(false);
@@ -128,11 +128,12 @@ export function NewProjectClient({ projects }: { projects: Project[] }) {
   ) => {
     if (!user) return;
     try {
-      fetch("/api/organization-projects", {
+      console.info("USER_ID =>", session?.user?.id)
+      fetch("/api/user-projects", {
         method: "POST",
         body: JSON.stringify({
-          organizationId: user.id,
-          organizationName: organizationname,
+          userId: user.id,
+          userName: username,
           name,
           description,
           visibility,
