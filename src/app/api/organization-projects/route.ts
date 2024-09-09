@@ -1,6 +1,13 @@
 import { getFirebaseDb } from "@/firebase";
 import { prisma } from "@/lib/db";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  or,
+  query,
+  where,
+} from "firebase/firestore";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -42,54 +49,68 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { description, name, organizationId, organizationName, visibility } =
+    const { description, name, organizationId, visibility } =
       await request.json();
 
-    if (
-      !description ||
-      !name ||
-      !organizationId ||
-      !organizationName ||
-      !visibility
-    )
-      return new Response("Missing required fields.", {
-        status: 400,
-      });
+    console.log(organizationId)
 
-    if (!["public", "private"].includes(visibility))
-      return new Response(
-        "Invalid visibility value (expected : `public` | `private`).",
-        { status: 400 }
-      );
-
-    if (name.length < 3 || name.length > 25)
-      return new Response(
-        "Project name length should be between 3 characters and 25 characters long (included).",
-        {
-          status: 400,
-        }
-      );
-
-    if (description.length < 3 || description.length > 255)
-      return new Response(
-        "Project description length should be between 3 characters and 255 characters long (included).",
-        {
-          status: 400,
-        }
-      );
-
-    // TODO : check if organization exists and if name corresponds
-
-    await addDoc(collection(getFirebaseDb(), "projects"), {
-      description,
-      name: name.toLowerCase().replaceAll(" ", ""),
-      organizationId,
-      organizationName,
-      visibility,
+    await prisma.project.create({
+      data: {
+        name,
+        description,
+        organizationId,
+        visibility,
+      },
     });
-  } catch (err: any) {
-    return new Response(err, {
-      status: 500,
-    });
+  } catch (err) {
+    return Response.json({ err }, { status: 500 });
   }
+
+  //   if (
+  //     !description ||
+  //     !name ||
+  //     !organizationId ||
+  //     !organizationName ||
+  //     !visibility
+  //   )
+  //     return new Response("Missing required fields.", {
+  //       status: 400,
+  //     });
+
+  //   if (!["public", "private"].includes(visibility))
+  //     return new Response(
+  //       "Invalid visibility value (expected : `public` | `private`).",
+  //       { status: 400 }
+  //     );
+
+  //   if (name.length < 3 || name.length > 25)
+  //     return new Response(
+  //       "Project name length should be between 3 characters and 25 characters long (included).",
+  //       {
+  //         status: 400,
+  //       }
+  //     );
+
+  //   if (description.length < 3 || description.length > 255)
+  //     return new Response(
+  //       "Project description length should be between 3 characters and 255 characters long (included).",
+  //       {
+  //         status: 400,
+  //       }
+  //     );
+
+  //   // TODO : check if organization exists and if name corresponds
+
+  //   await addDoc(collection(getFirebaseDb(), "projects"), {
+  //     description,
+  //     name: name.toLowerCase().replaceAll(" ", ""),
+  //     organizationId,
+  //     organizationName,
+  //     visibility,
+  //   });
+  // } catch (err: any) {
+  //   return new Response(err, {
+  //     status: 500,
+  //   });
+  // }
 }

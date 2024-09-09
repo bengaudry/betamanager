@@ -49,7 +49,7 @@ const Separator = () => <div className="w-full h-[1px] bg-neutral-200 my-2" />;
 
 export function Sidebar() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light border-r border-neutral-300 h-full py-8 px-4">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light border-r border-neutral-300 h-full pb-8 pt-4 px-4">
       <div className="flex flex-col justify-between h-full">
         <div className="flex flex-col">
           <NavElement title="Dashboard" href="" icon="apps" />

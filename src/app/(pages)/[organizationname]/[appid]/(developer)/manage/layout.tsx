@@ -15,11 +15,11 @@ export default async function DashboardLayout({
     <AuthGuarded
       href={`/signin?redirect-uri=/${params.organizationname}/${params.appid}/manage`}
     >
-      <div className="flex flex-row items-center w-full h-screen">
-        <Sidebar />
-        <div className="h-full w-full overflow-y-auto">
-          <Navbar session={session} />
-          {children}
+      <div className="flex flex-col w-full h-screen">
+        <Navbar session={session} />
+        <div className="flex flex-row items-center w-full h-full">
+          <Sidebar />
+          <div className="h-full w-full overflow-y-auto">{children}</div>
         </div>
       </div>
     </AuthGuarded>
