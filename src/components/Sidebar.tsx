@@ -6,7 +6,7 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { Combobox } from "./ui/combobox";
 
-const NavElement = ({
+const SidebarElement = ({
   title,
   href,
   icon,
@@ -52,24 +52,24 @@ export function Sidebar() {
     <nav className="navbar navbar-expand-lg navbar-light bg-light border-r border-neutral-300 h-full pb-8 pt-4 px-4">
       <div className="flex flex-col justify-between h-full">
         <div className="flex flex-col">
-          <NavElement title="Dashboard" href="" icon="apps" />
+          <SidebarElement title="Dashboard" href="" icon="apps" />
           <Separator />
-          {/* <NavElement title="Testers" href="testers" icon="users-alt" /> */}
-          <NavElement title="Issues" href="issues" icon="shield-exclamation" />
-          <NavElement
+          {/* <SidebarElement title="Testers" href="testers" icon="users-alt" /> */}
+          <SidebarElement title="Issues" href="issues" icon="shield-exclamation" />
+          <SidebarElement
             title="Suggestions"
             href="suggestions"
             icon="lightbulb-on"
           />
           <Separator />
-          <NavElement
+          <SidebarElement
             title="Customize forms"
             href="customize"
             icon="customize-computer"
             isPremium
           />
         </div>
-        <NavElement title="Settings" href="settings" icon="settings" />
+        <SidebarElement title="Settings" href="settings" icon="settings" />
       </div>
     </nav>
   );
@@ -82,14 +82,14 @@ export function Navbar({ session }: PropsWithSession) {
 
   return (
     <header className="w-full flex sticky top-0 items-center gap-3 border-b border-neutral-300 py-2 px-4">
-      <button className="flex gap-2" onClick={() => push(`/${organizationname}`)}>
+      <button className="group flex gap-2" onClick={() => push(`/${organizationname}`)}>
         <Avatar className="w-6 h-6">
           <AvatarImage src={user?.image ?? undefined} />
           <AvatarFallback>
             {user?.name && user.name[0].toUpperCase()}
           </AvatarFallback>
         </Avatar>
-        <span className="font-medium text-neutral-400">{user?.name}</span>
+        <span className="font-medium text-neutral-400 group-hover:text-black transition-colors">{user?.name}</span>
       </button>
 
       <span className="text-xl text-neutral-300">/</span>
