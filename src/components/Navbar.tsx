@@ -18,9 +18,9 @@ export async function Navbar({
   const projects: Project[] = await res.json();
 
   return (
-    <header className="w-full flex sticky top-0 items-center gap-3 border-b border-neutral-300 py-2 px-4">
+    <header className="w-full flex sticky top-0 items-center gap-3 border-b py-2 px-4">
       <NavbarUserDisplayer user={user} />
-      <span className="text-xl text-neutral-300">/</span>
+      <span className="text-xl text-neutral-300 dark:text-neutral-700">/</span>
 
       <div>
         <ProjectSelector projects={projects} />

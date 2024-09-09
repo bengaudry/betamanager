@@ -17,8 +17,8 @@ const NavLink = ({ href, title }: { href: string; title: string }) => {
       href={url}
       className={`block border-b-2 font-semibold ${
         active
-          ? "border-black"
-          : "border-neutral-300 text-neutral-400 hover:border-neutral-500"
+          ? "border-black dark:border-white"
+          : "text-neutral-400 hover:border-neutral-500"
       } transition-colors duration-300 px-4 py-2`}
     >
       {title}

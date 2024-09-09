@@ -29,8 +29,8 @@ export function TextInput({
         ref={inputRef}
         onChange={handleChange}
         className={`bg-transparent border ${
-          error ? "border-red-600" : "border-neutral-200"
-        } outline-none rounded-md px-4 py-2 transition-colors focus:border-neutral-200`}
+          error ? "border-red-600" : ""
+        } outline-none rounded-md px-4 py-2 transition-colors focus:border-neutral-200 dark:focus:border-neutral-600`}
         {...props}
       />
       <p className={`text-red-500 leading-6 text-sm transition-colors`}>

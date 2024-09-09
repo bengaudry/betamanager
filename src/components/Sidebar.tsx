@@ -29,7 +29,7 @@ const SidebarElement = ({
     <Link
       href={url}
       className={`${
-        active ? "bg-neutral-200" : "text-neutral-400 hover:bg-neutral-100"
+        active ? "bg-neutral-200 dark:bg-neutral-700" : "text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
       } ${
         isPremium ? "pr-4" : "pr-8"
       } transition-colors rounded-md pl-2 py-0.5 font-medium flex items-center justify-between gap-8`}
@@ -47,11 +47,11 @@ const SidebarElement = ({
   );
 };
 
-const Separator = () => <div className="w-full h-[1px] bg-neutral-200 my-2" />;
+const Separator = () => <div className="w-full h-[1px] bg-neutral-200 dark:bg-neutral-700 my-2" />;
 
 export function Sidebar() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light border-r border-neutral-300 h-full pb-8 pt-4 px-4">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light border-r h-full pb-8 pt-4 px-4">
       <div className="flex flex-col justify-between h-full">
         <div className="flex flex-col">
           <SidebarElement title="Dashboard" href="" icon="apps" />

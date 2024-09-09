@@ -35,7 +35,7 @@ function TesterDetails({
   );
 
   return (
-    <div className="border-b border-neutral-300 text-neutral-500">
+    <div className="border-b text-neutral-500">
       <div className="grid grid-cols-12 items-center justify-center px-4 py-2 w-full">
         <h2 className="font-medium col-span-3 overflow-clip">
           {tester.firstName} {tester.lastName}

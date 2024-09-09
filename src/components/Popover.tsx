@@ -53,7 +53,7 @@ export function Popover({
       />
 
       <div
-        className={`mx-8 my-16  bg-white border border-neutral-300 rounded-xl w-full max-w-screen-md p-8 z-50 ${
+        className={`mx-8 my-16 bg-white dark:bg-neutral-900 border rounded-xl w-full max-w-screen-md p-8 z-50 ${
           popoverOpened ? "scale-100 opacity-100" : "scale-90 opacity-0"
         } transition-all`}
       >
