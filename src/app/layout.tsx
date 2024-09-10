@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Raleway } from "next/font/google";
+import {Analytics} from "@vercel/analytics/react";
+
+import { SessionWrapper } from "@/components/SessionWrapper";
+
 import "./globals.css";
 import "@flaticon/flaticon-uicons/css/regular/rounded.css";
 import "@flaticon/flaticon-uicons/css/brands/all.css";
-import { SessionWrapper } from "@/components/SessionWrapper";
 
 const font = Raleway({ subsets: ["latin"] });
 
@@ -21,6 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
+        <Analytics />
         <SessionWrapper>{children}</SessionWrapper>
       </body>
     </html>
