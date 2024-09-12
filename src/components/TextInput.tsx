@@ -1,11 +1,28 @@
-import { ChangeEvent, useRef } from "react";
+import { ChangeEvent, LegacyRef, Ref, useRef } from "react";
 import { Label } from "./Label";
+import { InputBase } from "@mui/material";
 
-type TextInputProps = {
-  label: string;
+type TextInputBaseProps = {
   error?: string | undefined;
   onChangeText?: (text: string) => void;
 } & JSX.IntrinsicElements["input"];
+
+type TextInputProps = {
+  label: string;
+} & TextInputBaseProps;
+
+
+export function TextInputBase({ error, ...props}: TextInputBaseProps) {
+  return (
+    <input
+      type="text"
+      className={`bg-transparent border ${
+        error ? "border-red-600" : ""
+      } outline-none rounded-md px-4 py-2 transition-colors focus:border-zinc-200 dark:focus:border-zinc-600`}
+      {...props}
+    />
+  );
+}
 
 export function TextInput({
   error,
@@ -24,13 +41,10 @@ export function TextInput({
   return (
     <div className={`flex flex-col ${className}`}>
       <Label label={label} />
-      <input
+      <InputBase
         type="text"
         ref={inputRef}
         onChange={handleChange}
-        className={`bg-transparent border ${
-          error ? "border-red-600" : ""
-        } outline-none rounded-md px-4 py-2 transition-colors focus:border-neutral-200 dark:focus:border-neutral-600`}
         {...props}
       />
       <p className={`text-red-500 leading-6 text-sm transition-colors`}>

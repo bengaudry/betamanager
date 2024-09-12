@@ -21,7 +21,7 @@ export function PageWrapper({
           <div className="mb-4">
             {title && <h1 className="font-bold text-3xl leading-7">{title}</h1>}
             {subtitle && (
-              <h2 className="text-neutral-400 leading-4 mt-2">{subtitle}</h2>
+              <h2 className="text-zinc-400 leading-4 mt-2">{subtitle}</h2>
             )}
           </div>
         )}

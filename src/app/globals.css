@@ -7,14 +7,14 @@
     background-color: rgb(159, 148, 239);
 }
 
-p, span, input, div {
-    @apply text-neutral-950 dark:text-neutral-200
+p, span, input, div, h1, h2, h3, h4, h5, h6 {
+    @apply text-zinc-950 dark:text-zinc-200
 }
 
 html, body {
-    @apply bg-neutral-100 dark:bg-neutral-950
+    @apply bg-zinc-100 dark:bg-zinc-900
 }
 
 * {
-    @apply border-neutral-200 dark:border-neutral-800
+    @apply border-zinc-200 dark:border-zinc-800
 }

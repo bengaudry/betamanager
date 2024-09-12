@@ -1,6 +1,5 @@
-import { redirect } from "next/navigation";
-import { NavbarUserDisplayer, ProjectSelector } from "./Sidebar";
-import { Combobox } from "./ui/combobox";
+import { ProjectSelector } from "./ProjectSelector";
+import { NavbarUserDisplayer } from "./NavbarUserDisplayer";
 import { getBaseUrl } from "@/lib/utils";
 
 export async function Navbar({
@@ -20,7 +19,7 @@ export async function Navbar({
   return (
     <header className="w-full flex sticky top-0 items-center gap-3 border-b py-2 px-4">
       <NavbarUserDisplayer user={user} />
-      <span className="text-xl text-neutral-300 dark:text-neutral-700">/</span>
+      <span className="text-xl text-zinc-300 dark:text-zinc-700">/</span>
 
       <div>
         <ProjectSelector projects={projects} />

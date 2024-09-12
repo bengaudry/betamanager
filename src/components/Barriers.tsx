@@ -17,10 +17,8 @@ function useGuard(href: string, condition: boolean) {
 export function AuthGuarded({
   children,
   href,
-}: PropsWithChildren & { href?: string }) {
+}: PropsWithChildren & { href?: string; ownerId?: string }) {
   const { data: session } = useSession();
-
-  console.log(session)
 
   useGuard(href ?? "/signin", session === null);
 

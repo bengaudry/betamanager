@@ -42,9 +42,9 @@ export const NewProjectButton = ({
           );
         onOpen();
       }}
-      className="group relative h-fit w-full xs:h-36 py-2 grid place-content-center justify-items-center rounded-lg border hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+      className="group relative h-fit w-full xs:h-36 py-2 grid place-content-center justify-items-center rounded-lg border hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
     >
-      <p className="text-neutral-400 flex items-center gap-2">
+      <p className="text-zinc-400 flex items-center gap-2">
         <span className="xs:hidden">New project</span>
         <i className="inline-block fi fi-rr-plus xs:text-5xl xs:group-hover:scale-125 transition-transform origin-center translate-y-0.5" />
       </p>

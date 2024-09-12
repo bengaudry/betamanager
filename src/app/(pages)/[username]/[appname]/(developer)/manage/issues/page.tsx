@@ -55,8 +55,8 @@ export default async function IssuesPage({
 
 
 
-      {/* <div className="rounded-md overflow-hidden bg-neutral-100">
-        <div className="px-4 pt-4 pb-1 bg-neutral-200 border-b border-neutral-300">
+      {/* <div className="rounded-md overflow-hidden bg-zinc-100">
+        <div className="px-4 pt-4 pb-1 bg-zinc-200 border-b border-zinc-300">
           <div className="mb-4 flex items-center gap-3">
             <input
               type="text"
@@ -77,7 +77,7 @@ export default async function IssuesPage({
           {issues && issues.length > 0 ? (
             issues.map((issue) => <IssueDisplayer issue={issue} />)
           ) : (
-            <p className="text-center text-neutral-400 mt-4">
+            <p className="text-center text-zinc-400 mt-4">
               No issues found. Try modifying filters
             </p>
           )}

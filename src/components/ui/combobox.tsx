@@ -34,7 +34,7 @@ export function Combobox<V extends string>({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild className="bg-red-500 border-none">
         <Button
           variant="outline"
           role="combobox"
@@ -48,7 +48,7 @@ export function Combobox<V extends string>({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
-        <Command>
+        <Command className="dark:bg-zinc-900 rounded-none">
           <CommandInput placeholder="Search element..." />
           <CommandList>
             <CommandEmpty>No element found.</CommandEmpty>

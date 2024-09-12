@@ -39,7 +39,7 @@ export default function SignInPage() {
 
           <button
             onClick={handleSignIn}
-            className="bg-gradient-to-b from-neutral-800 to-neutral-900 text-white px-8 rounded-md py-1 w-full shadow-lg shadow-black/30"
+            className="bg-gradient-to-b from-zinc-800 to-zinc-900 text-white px-8 rounded-md py-1 w-full shadow-lg shadow-black/30"
           >
             <i className="fi fi-brands-github text-2xl translate-y-1 inline-block mr-2" />
             Sign in with GitHub

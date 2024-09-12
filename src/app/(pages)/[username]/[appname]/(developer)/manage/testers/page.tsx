@@ -35,7 +35,7 @@ function TesterDetails({
   );
 
   return (
-    <div className="border-b text-neutral-500">
+    <div className="border-b text-zinc-500">
       <div className="grid grid-cols-12 items-center justify-center px-4 py-2 w-full">
         <h2 className="font-medium col-span-3 overflow-clip">
           {tester.firstName} {tester.lastName}
@@ -167,8 +167,8 @@ export default function TestersPage() {
 
   return (
     <PageWrapper title="Testers">
-      <div className="rounded-md overflow-hidden bg-neutral-100">
-        <div className="px-4 pt-4 pb-1 bg-neutral-200 border-b border-neutral-300">
+      <div className="rounded-md overflow-hidden bg-zinc-100">
+        <div className="px-4 pt-4 pb-1 bg-zinc-200 border-b border-zinc-300">
           <div className="mb-4 flex items-center gap-3">
             <input
               type="text"
@@ -201,7 +201,7 @@ export default function TestersPage() {
               <TesterDetails key={idx} tester={tester} onDeleteUser={handleDeleteUser} />
             ))
           ) : (
-            <p className="text-center text-neutral-400 mt-4">
+            <p className="text-center text-zinc-400 mt-4">
               No testers found. Try modifying filters
             </p>
           )}

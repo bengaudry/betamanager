@@ -1,5 +1,4 @@
 "use client";
-import { PremiumGuarded } from "@/components/Barriers";
 import { PageWrapper } from "@/components/PageWrapper";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
@@ -18,7 +17,7 @@ const NavLink = ({ href, title }: { href: string; title: string }) => {
       className={`block border-b-2 font-semibold ${
         active
           ? "border-black dark:border-white"
-          : "text-neutral-400 hover:border-neutral-500"
+          : "text-zinc-400 hover:border-zinc-500"
       } transition-colors duration-300 px-4 py-2`}
     >
       {title}

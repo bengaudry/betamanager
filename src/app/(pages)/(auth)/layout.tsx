@@ -1,13 +1,11 @@
-"use client";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
 
-export default function AuthLayout({ children }: Readonly<PropsWithChildren>) {
-  const { data: session } = useSession();
-  const { push } = useRouter();
+export default async function AuthLayout({ children }: Readonly<PropsWithChildren>) {
+  const session = await auth();
 
-  if (session) push(`/${session.user?.name}`)
+  if (session) redirect(`/${session.user?.name}`)
 
   return children;
 }

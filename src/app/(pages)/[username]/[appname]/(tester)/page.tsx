@@ -1,15 +1,14 @@
 "use client";
-import { Popover } from "@/components/Popover";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { useState } from "react";
+import { Popover } from "@/components/Popover";
 
 const SuggestionForm = () => <>Suggestion</>;
 
 const IssueForm = () => <>Issue</>;
 
-export default function AppBetaPage() {
-  const { appname } = useParams();
+export default function AppBetaPage({ params }: { params: { appname: string }}) {
+  const { appname } = params;
   const [popoverOpened, setPopoverOpened] = useState(false);
   const [popoverContent, setPopoverContent] = useState<"issue" | "suggestion">(
     "issue"
@@ -37,11 +36,11 @@ export default function AppBetaPage() {
         {popoverContent === "suggestion" ? <SuggestionForm /> : <IssueForm />}
       </Popover>
       <div className="bg-gradient-to-b from-indigo-500/40 to-indigo-500/0 h-screen w-full px-6 py-12">
-        <div className="relative bg-white/60 backdrop-blur-md rounded-3xl max-w-screen-md mx-auto px-8 py-16 shadow-xl shadow-neutral-600/20">
+        <div className="relative bg-white/60 backdrop-blur-md rounded-3xl max-w-screen-md mx-auto px-8 py-16 shadow-xl shadow-zinc-600/20">
           <header className="mb-8">
             <img
               src=""
-              className="block mx-auto mb-4 bg-neutral-200 w-24 h-24 rounded-full object-cover"
+              className="block mx-auto mb-4 bg-zinc-200 w-24 h-24 rounded-full object-cover"
               width={96}
               height={96}
             />
