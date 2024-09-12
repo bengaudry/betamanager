@@ -1,11 +1,10 @@
-import { ChangeEvent, LegacyRef, Ref, useRef } from "react";
+import { ChangeEvent, InputHTMLAttributes } from "react";
 import { Label } from "./Label";
-import { InputBase } from "@mui/material";
 
 type TextInputBaseProps = {
   error?: string | undefined;
   onChangeText?: (text: string) => void;
-} & JSX.IntrinsicElements["input"];
+} & InputHTMLAttributes<HTMLInputElement>;
 
 type TextInputProps = {
   label: string;
@@ -32,7 +31,6 @@ export function TextInput({
   className,
   ...props
 }: TextInputProps) {
-  const inputRef = useRef(null);
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (onChange) onChange(event);
     if (onChangeText) onChangeText(event.target.value);
@@ -41,9 +39,8 @@ export function TextInput({
   return (
     <div className={`flex flex-col ${className}`}>
       <Label label={label} />
-      <InputBase
+      <TextInputBase
         type="text"
-        ref={inputRef}
         onChange={handleChange}
         {...props}
       />
