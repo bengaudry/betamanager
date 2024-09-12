@@ -4,7 +4,7 @@ import { type User } from "next-auth";
 import { useParams, useRouter } from "next/navigation";
 
 export const NavbarUserDisplayer = ({ user }: { user?: User }) => {
-  const {username} = useParams();
+  const { username } = useParams();
   const { push } = useRouter();
 
   return (
@@ -15,7 +15,7 @@ export const NavbarUserDisplayer = ({ user }: { user?: User }) => {
           {user?.name && user.name[0].toUpperCase()}
         </AvatarFallback>
       </Avatar>
-      <span className="font-medium text-zinc-400 group-hover:text-black transition-colors">
+      <span className="font-medium text-zinc-400 group-hover:text-black dark:group-hover:text-white transition-colors">
         {user?.name}
       </span>
     </button>
