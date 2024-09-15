@@ -4,7 +4,7 @@ import { CTA } from "./CTA";
 import { AuthButtons } from "./LandingPage/AuthButtons";
 
 export const HeaderNavBar = ({ session }: PropsWithSession) => (
-  <nav className="absolute top-0 inset-0 w-full px-4 py-2 md:px-8 md:py-4">
+  <nav className="fixed top-0 left-0 right-0 w-full px-4 py-2 md:px-8 md:py-4 z-30">
     <div className="max-w-screen-lg mx-auto flex items-center justify-between">
       <div className="flex items-center gap-8">
         <h2 className="text-lg font-semibold">Beta manager</h2>
