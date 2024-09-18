@@ -32,7 +32,7 @@ export const DashboardLayoutContent = ({
       ownerId={project === undefined ? undefined : project?.userId ?? ""}
       href={`/signin?redirect-uri=/${params.username}/${params.appname}/manage`}
     >
-      <div className="flex flex-col w-full h-screen">
+      <div className="flex flex-col w-full h-screen overflow-hidden">
          {children}
       </div>
     </AuthGuarded>

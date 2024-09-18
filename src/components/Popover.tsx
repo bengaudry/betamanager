@@ -1,9 +1,10 @@
 import { PropsWithChildren, useEffect, useState } from "react";
-import { CTA } from "./CTA";
+import { CTA, CTAProps } from "./CTA";
 
 type PopoverProps = {
   opened: boolean;
-  submitLabel?: string;
+  submitButtonProps?: CTAProps;
+  cancelButtonProps?: CTAProps;
   title?: string;
   disableClose?: boolean;
   disableSubmit?: boolean;
@@ -18,7 +19,8 @@ export function Popover({
   onAsyncSubmit,
   opened,
   title,
-  submitLabel,
+  submitButtonProps,
+  cancelButtonProps,
   children,
 }: PopoverProps) {
   const [popoverOpened, setPopoverOpened] = useState(opened);
@@ -41,10 +43,10 @@ export function Popover({
 
   return (
     <div
-      className={`fixed w-screen h-screen inset-0 flex items-center justify-center z-50`}
+      className={`fixed w-screen h-screen py-8 px-8 inset-0 flex items-center justify-center z-50`}
     >
       <div
-        className={`bg-black/50 backdrop-blur-sm absolute w-full h-full inset-0 ${
+        className={`bg-black/50 backdrop-blur-sm absolute w-full inset-0 ${
           popoverOpened
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -53,18 +55,24 @@ export function Popover({
       />
 
       <div
-        className={`mx-8 my-16 bg-white dark:bg-zinc-900 border rounded-xl w-full max-w-screen-md p-8 z-50 ${
+        className={`bg-white dark:bg-zinc-900 border rounded-xl w-full max-w-screen-md p-8 z-50 ${
           popoverOpened ? "scale-100 opacity-100" : "scale-90 opacity-0"
-        } transition-all`}
+        } transition-all max-h-full overflow-y-scroll`}
       >
         <h3 className="font-semibold text-2xl mb-4">{title}</h3>
 
         <div>{children}</div>
 
         <div className="flex gap-2 justify-end mt-4">
-          <CTA label="Cancel" secondary onClick={handleClosePopover} />
           <CTA
-            label={loading ? "..." : submitLabel ?? "Continue"}
+            {...cancelButtonProps}
+            label={cancelButtonProps?.label ?? "Cancel"}
+            secondary
+            onClick={handleClosePopover}
+          />
+          <CTA
+            {...submitButtonProps}
+            label={loading ? "..." : submitButtonProps?.label ?? "Continue"}
             onClick={async () => {
               if (onAsyncSubmit) {
                 setLoading(true);

@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { getBaseUrl } from "@/lib/utils";
+import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
 
@@ -12,18 +12,13 @@ export default async function UserAppLayout({
   // Check if an app exists and is available to current user before showing it
   const session = await auth();
 
-  const res = await fetch(
-    `${getBaseUrl()}/api/user-projects?username=${params.username}&curr-uid=${
-      session?.user?.id
-    }`
-  );
-  const projects: Project[] = await res.json();
+  const projectsNb = await prisma.project.count({ where: {
+    userName: params.username,
+    name: params.appname,
+    userId: session?.user?.id
+  }})
 
-  const projectsMatchingWithUrl = projects.filter(
-    ({ name }) => name === params.appname
-  );
-
-  if (projectsMatchingWithUrl.length < 1) redirect(`/${params.username}`);
+  if (projectsNb < 1) redirect(`/${params.username}`);
 
   return children;
 }

@@ -1,102 +1,82 @@
-"use client";
 import Link from "next/link";
-import { useState } from "react";
-import { Popover } from "@/components/Popover";
+import { redirect } from "next/navigation";
 
-const SuggestionForm = () => <>Suggestion</>;
+import { prisma } from "@/lib/db";
+import { PageWrapper } from "@/components/PageWrapper";
+import { TesterSpace } from "@/components/TesterSpace";
+import { convertSearchParamToString } from "@/lib/utils";
+import { auth } from "@/lib/auth";
 
-const IssueForm = () => <>Issue</>;
+export default async function AppBetaPage({
+  params,
+  searchParams,
+}: {
+  params: { appname: string; username: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
+  const { appname, username } = params;
+  const session = await auth();
+  const token = convertSearchParamToString(searchParams?.token);
 
-export default function AppBetaPage({ params }: { params: { appname: string }}) {
-  const { appname } = params;
-  const [popoverOpened, setPopoverOpened] = useState(false);
-  const [popoverContent, setPopoverContent] = useState<"issue" | "suggestion">(
-    "issue"
-  );
+  const project = await prisma.project.findFirst({
+    where: {
+      name: appname,
+      userName: username,
+    },
+  });
 
-  const baseBtnClassName =
-    "group p-2 px-6 sm:px-2 font-medium sm:text-lg flex sm:flex-col items-center sm:justify-center gap-3 rounded-full sm:rounded-xl transition-all w-full sm:aspect-square shadow-xl";
+  if (token !== "preview") {
+    const serverToken = await prisma.token.findFirst({
+      where: { projectId: project?.id, value: token ?? undefined },
+    });
+
+    if (!project) redirect("/err=redirected/not-found");
+
+    if (!token || !serverToken) {
+      return (
+        <div className="w-screen h-screen grid place-content-center">
+          <p>Token is not valid</p>
+        </div>
+      );
+    }
+  }
+
+  // If page is in preview mode, check if the user accessing is the owner of the project
+  if (token === "preview" && project?.userId !== session?.user?.id) {
+    redirect("/");
+  }
 
   return (
     <>
-      <Popover
-        title={
-          popoverContent === "suggestion"
-            ? "Submit a suggestion"
-            : "Report an issue"
-        }
-        submitLabel={
-          popoverContent === "suggestion"
-            ? "Submit"
-            : "Report"
-        }
-        opened={popoverOpened}
-        onClose={() => setPopoverOpened(false)}
-      >
-        {popoverContent === "suggestion" ? <SuggestionForm /> : <IssueForm />}
-      </Popover>
-      <div className="bg-gradient-to-b from-indigo-500/40 to-indigo-500/0 h-screen w-full px-6 py-12">
-        <div className="relative bg-white/60 backdrop-blur-md rounded-3xl max-w-screen-md mx-auto px-8 py-16 shadow-xl shadow-zinc-600/20">
-          <header className="mb-8">
+      <PageWrapper>
+        <div className="w-full mx-auto max-w-screen-sm">
+          <header className="flex flex-row items-center gap-4 mb-8">
             <img
-              src=""
-              className="block mx-auto mb-4 bg-zinc-200 w-24 h-24 rounded-full object-cover"
-              width={96}
-              height={96}
+              src={""}
+              className="block bg-zinc-200 w-16 h-16 rounded-full object-cover"
+              width={64}
+              height={64}
             />
-            <h1 className="text-center text-4xl font-bold">
-              {appname[0].toUpperCase() + appname.slice(1)}
-            </h1>
-            <p className="max-w-sm mx-auto leading-4">
-              This is the description of the app. It can be quite long but maybe
-              it will be cut.
-            </p>
+            <div>
+              <p className="capitalize text-3xl font-semibold">
+                {project?.name}
+              </p>
+              <p className="max-w-sm leading-4 text-neutral-500">
+                {project?.description}
+              </p>
+            </div>
           </header>
 
-          <div className="w-full max-w-[500px] mx-auto">
-            <h3 className="text-lg font-semibold mb-1">
-              Give us some feedback
-            </h3>
-            <div className="grid grid-rows-2 sm:grid-rows-1 sm:grid-cols-2 gap-2">
-              <button
-                className={
-                  "bg-red-600/50 hover:bg-red-600/80 shadow-red-600/0 hover:shadow-red-600/20" +
-                  " " +
-                  baseBtnClassName
-                }
-                onClick={() => {
-                  setPopoverOpened(true);
-                  setPopoverContent("issue");
-                }}
-              >
-                <i className="fi fi-rr-shield-exclamation translate-y-0.5 text-lg sm:text-3xl transition-transform group-hover:scale-125" />
-                Report an issue
-              </button>
-              <button
-                className={
-                  "bg-sky-500/40 hover:bg-sky-500/70 shadow-sky-600/0 hover:shadow-sky-600/20" +
-                  " " +
-                  baseBtnClassName
-                }
-                onClick={() => {
-                  setPopoverOpened(true);
-                  setPopoverContent("suggestion");
-                }}
-              >
-                <i className="fi fi-rr-lightbulb-on translate-y-0.5 text-lg sm:text-3xl transition-transform group-hover:scale-125" />
-                Submit a suggestion
-              </button>
-            </div>
-          </div>
-
-          <Link
-            href="/"
-            className="absolute top-full block right-6 bg-indigo-700 hover:bg-indigo-800 text-white font-semibold rounded-b-xl px-3 py-1"
-          >
-            Made with LaunchFlow
-          </Link>
+          <TesterSpace projectDetails={project} />
         </div>
-      </div>
+      </PageWrapper>
+
+      <Link
+        href="/"
+        className="fixed bottom-0 block left-1/2 -translate-x-1/2 bg-indigo-700 hover:bg-indigo-800 text-white font-semibold rounded-t-xl px-6 py-1 pb-4 translate-y-3 hover:translate-y-0 transition-all"
+      >
+        Made with LaunchFlow
+      </Link>
     </>
   );
 }

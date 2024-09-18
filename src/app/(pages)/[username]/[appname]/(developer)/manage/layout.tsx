@@ -16,7 +16,7 @@ export default async function DashboardLayout({
   return (
     <ProjectDataProvider projectName={params.appname as string}>
       <DashboardLayoutContent params={params} userId={session?.user?.id ?? ""}>
-        <Navbar session={session} username={params.username as string} />
+        <Navbar session={session} {...params} />
         <div className="flex flex-row items-center w-full h-full">
           <Sidebar />
           <div className="h-full w-full overflow-y-auto">{children}</div>

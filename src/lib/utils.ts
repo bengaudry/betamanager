@@ -10,3 +10,11 @@ export function getBaseUrl() {
     ? "http://localhost:3000"
     : "https://betamanager.vercel.app";
 }
+
+export function convertSearchParamToString(
+  searchParam: string | string[] | undefined
+): null | string {
+  if (searchParam === undefined) return null;
+  if (Array.isArray(searchParam)) return searchParam[0];
+  return searchParam;
+}

@@ -1,11 +1,15 @@
+import { cn } from "@/lib/utils";
 import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 
-type CTAProps = {
+export type CTAColor = "danger" | "neutral" | "valid" | "warning" | "colored";
+
+export type CTAProps = {
   small?: boolean;
   label: string;
   icon?: string;
   rightIcon?: string;
   secondary?: boolean;
+  color?: CTAColor;
 } & DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
@@ -18,15 +22,40 @@ export function CTA({
   rightIcon,
   className,
   secondary,
+  color = "neutral",
   ...props
 }: CTAProps) {
-  const colors = secondary
-    ? "from-indigo-500/30 to-indigo-700/30 text-black"
-    : "from-indigo-500 to-indigo-700 text-white";
+  const btnOpacity = secondary ? "bg-opacity-20 dark:bg-opacity-20" : "";
+
+  const getBackgroundColors = () =>
+    color === "colored"
+      ? "bg-gradient-to-b from-indigo-500 to-indigo-700"
+      : color === "danger"
+      ? "bg-red-500"
+      : color === "warning"
+      ? "bg-orange-500"
+      : color === "valid"
+      ? "bg-green-500"
+      : "bg-neutral-900 dark:bg-neutral-100";
+
+  const getForegroundColors = () =>
+    color === "colored"
+      ? secondary
+        ? "text-black"
+        : "text-white"
+      : color === "danger"
+      ? "text-white"
+      : color === "warning"
+      ? "text-white"
+      : color === "valid"
+      ? "text-white"
+      : secondary
+      ? "text-neutral-900 dark:text-neutral-100"
+      : "text-neutral-100 dark:text-black";
 
   return (
     <button
-      className={`bg-gradient-to-b rounded-lg transition-all ${colors} enabled:hover:-translate-y-0.5 border-indigo-500/20 ${className}`}
+      className={`rounded-lg transition-all enabled:hover:-translate-y-0.5 ${btnOpacity} ${getBackgroundColors()}  ${className}`}
       onMouseEnter={() => console.log("hovering cta")}
       {...props}
     >
@@ -39,7 +68,7 @@ export function CTA({
         <span
           className={`${
             small ? "text-sm" : "text-base"
-          } text-nowrap font-semibold`}
+          } text-nowrap font-semibold ${getForegroundColors()}`}
         >
           {label}
         </span>
