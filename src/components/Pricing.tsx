@@ -62,7 +62,7 @@ const PricingCard = ({
       <div className="px-9 py-8 flex flex-col gap-1">{children}</div>
 
       <div className="px-9 mb-6">
-        <CTA label={`Choose ${name} plan`} secondary={!suggested} className="w-full" />
+        <CTA label={`Choose ${name} plan`} secondary={!suggested} color={suggested ? "colored" : "neutral"} className="w-full" />
       </div>
     </div>
   );

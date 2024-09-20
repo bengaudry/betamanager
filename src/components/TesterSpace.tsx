@@ -13,6 +13,8 @@ import {
 import { Label } from "./Label";
 import { Textarea } from "./ui/textarea";
 import { FormWrapper } from "./FormWrapper";
+import { PhotosUploader } from "./PhotosUploader";
+import { ImageListType } from "react-images-uploading";
 
 const TesterSpaceContext = createContext<{
   popoverOpened: boolean;
@@ -57,12 +59,16 @@ function TesterSpacePopover({ onClose }: { onClose: () => void }) {
           ? "Submit a suggestion"
           : "Report an issue"
       }
-      submitButtonProps={popoverContent === "suggestion" ? {
-        label: "Submit",
-      } : {
-        label: "Report",
-        color: "danger"
-      }}
+      submitButtonProps={
+        popoverContent === "suggestion"
+          ? {
+              label: "Submit",
+            }
+          : {
+              label: "Report",
+              color: "danger",
+            }
+      }
       opened={popoverOpened}
       onClose={onClose}
     >
@@ -121,16 +127,18 @@ const IssueForm = () => {
     title: string;
     category: string | undefined;
     description: string;
+    images: ImageListType;
   }>({
     title: "",
     category: undefined,
     description: "",
+    images: [],
   });
 
   return (
     <FormWrapper>
       <TextInput
-        label="Issue title *"
+        label="Issue title"
         placeholder="Your issue in a few words"
         required
         value={formData.title}
@@ -138,7 +146,7 @@ const IssueForm = () => {
       />
       {categories.length > 0 && (
         <div>
-          <Label label="Category *" />
+          <Label label="Category" />
           <Select>
             <SelectTrigger>
               <SelectValue>{formData.category}</SelectValue>
@@ -163,7 +171,7 @@ const IssueForm = () => {
       )}
 
       <div>
-        <Label label="Description *" />
+        <Label label="Description" />
         <Textarea
           value={formData.description}
           onChange={(e) =>
@@ -174,6 +182,11 @@ const IssueForm = () => {
           }
         />
       </div>
+
+      <PhotosUploader
+        label="Photos (optionnal)"
+        onChange={(images) => setFormData((data) => ({ ...data, images }))}
+      />
     </FormWrapper>
   );
 };
